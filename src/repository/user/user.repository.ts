@@ -35,9 +35,9 @@ export class UserRepository {
     }
 
     public update(user: User): User {
-        const userIndex: number = this.userRepositoryDB.findIndex((user: User) => {
-            if (user._id === user._id) {
-                return user;
+        const userIndex: number = this.userRepositoryDB.findIndex((userUpdate: User) => {
+            if (userUpdate._id === user._id) {
+                return userUpdate;
             }
         });
 
