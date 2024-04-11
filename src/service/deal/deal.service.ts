@@ -1,10 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { DealRepository } from "../../interfaces";
 import { Deal } from "../../domain";
+import { repositoryTokens } from "../../common/tokens/repository.tokens";
 
 @Injectable()
-export class DealService {
-    constructor(private readonly dealRepository: DealRepository) {}
+export class DealServiceImpl {
+    constructor(@Inject(repositoryTokens.deal) private readonly dealRepository: DealRepository) {}
 
     public async createDeal(deal: Deal): Promise<Deal> {
         return await this.dealRepository.create(deal);

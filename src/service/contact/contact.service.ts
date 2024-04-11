@@ -1,10 +1,13 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { ContactRepository } from "../../interfaces";
 import { Contact } from "../../domain";
+import { repositoryTokens } from "../../common/tokens/repository.tokens";
 
 @Injectable()
-export class ContactService {
-    constructor(private readonly contactRepository: ContactRepository) {}
+export class ContactServiceImpl {
+    constructor(
+        @Inject(repositoryTokens.contact) private readonly contactRepository: ContactRepository,
+    ) {}
 
     public async createContact(contact: Contact): Promise<Contact> {
         return await this.contactRepository.create(contact);
