@@ -1,8 +1,9 @@
 import { User } from "../../domain";
 import { Injectable } from "@nestjs/common";
+import { UserRepository } from "../../interfaces/";
 
 @Injectable()
-export class UserRepository {
+export class UserRepositoryImpl implements UserRepository {
     private readonly userRepositoryDB: User[];
 
     constructor() {

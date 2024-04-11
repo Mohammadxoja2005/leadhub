@@ -1,8 +1,9 @@
 import { Lead } from "../../domain";
 import { Injectable } from "@nestjs/common";
+import { LeadRepository } from "../../interfaces/";
 
 @Injectable()
-export class LeadRepository {
+export class LeadRepositoryImpl implements LeadRepository {
     leadRepositoryDB: Lead[];
 
     constructor() {

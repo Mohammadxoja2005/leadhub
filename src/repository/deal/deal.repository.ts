@@ -1,8 +1,9 @@
 import { Deal, DealStatus } from "../../domain";
 import { Injectable } from "@nestjs/common";
+import { DealRepository } from "../../interfaces";
 
 @Injectable()
-export class DealRepository {
+export class DealRepositoryImpl implements DealRepository {
     dealRepositoryDB: Deal[];
 
     constructor() {

@@ -1,8 +1,9 @@
 import { Contact } from "../../domain";
 import { Injectable } from "@nestjs/common";
+import { ContactRepository } from "../../interfaces";
 
 @Injectable()
-export class ContactRepository {
+export class ContactRepositoryImpl implements ContactRepository {
     contactRepositoryDB: Contact[];
 
     constructor() {
