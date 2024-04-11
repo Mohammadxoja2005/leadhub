@@ -1,9 +1,9 @@
-import { User } from "../../domain/user/user.domain";
+import { User } from "../../domain";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class UserRepository {
-    userRepositoryDB: User[];
+    private readonly userRepositoryDB: User[];
 
     constructor() {
         this.userRepositoryDB = [
@@ -16,11 +16,11 @@ export class UserRepository {
         ];
     }
 
-    public findAll(): User[] {
+    public async findAll(): Promise<User[]> {
         return this.userRepositoryDB;
     }
 
-    public findOne(id: string): User {
+    public async findOne(id: string): Promise<User> {
         return this.userRepositoryDB.find((user: User) => {
             if (user._id === id) {
                 return user;
@@ -28,13 +28,13 @@ export class UserRepository {
         });
     }
 
-    public create(user: User): User {
+    public async create(user: User): Promise<User> {
         this.userRepositoryDB.push(user);
 
         return user;
     }
 
-    public update(user: User): User {
+    public async update(user: User): Promise<User> {
         const userIndex: number = this.userRepositoryDB.findIndex((userUpdate: User) => {
             if (userUpdate._id === user._id) {
                 return userUpdate;
@@ -46,7 +46,7 @@ export class UserRepository {
         return this.userRepositoryDB[userIndex];
     }
 
-    public delete(id: string): User[] {
+    public async delete(id: string): Promise<User[]> {
         return this.userRepositoryDB.filter((user: User) => user._id !== id);
     }
 }

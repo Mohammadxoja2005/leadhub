@@ -1,4 +1,4 @@
-import { Contact } from "../../domain/contact/contact.domain";
+import { Contact } from "../../domain";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
@@ -17,17 +17,17 @@ export class ContactRepository {
         ];
     }
 
-    public findAll(): Contact[] {
+    public async findAll(): Promise<Contact[]> {
         return this.contactRepositoryDB;
     }
 
-    public create(contact: Contact): Contact {
+    public async create(contact: Contact): Promise<Contact> {
         this.contactRepositoryDB.push(contact);
 
         return contact;
     }
 
-    public findOne(id: string): Contact {
+    public async findOne(id: string): Promise<Contact> {
         return this.contactRepositoryDB.find((contact: Contact) => {
             if (contact._id === id) {
                 return contact;
@@ -35,7 +35,7 @@ export class ContactRepository {
         });
     }
 
-    public update(contact: Contact): Contact {
+    public async update(contact: Contact): Promise<Contact> {
         const contactIndex: number = this.contactRepositoryDB.findIndex(
             (contactUpdate: Contact) => {
                 if (contactUpdate._id === contact._id) {
@@ -49,7 +49,7 @@ export class ContactRepository {
         return this.contactRepositoryDB[contactIndex];
     }
 
-    public delete(id: string): Contact[] {
+    public async delete(id: string): Promise<Contact[]> {
         return this.contactRepositoryDB.filter((contact: Contact) => contact._id !== id);
     }
 }

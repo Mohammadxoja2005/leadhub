@@ -1,4 +1,4 @@
-import { Deal, DealStatus } from "../../domain/deal/deal.domain";
+import { Deal, DealStatus } from "../../domain";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
@@ -21,11 +21,11 @@ export class DealRepository {
         ];
     }
 
-    public findAll(): Deal[] {
+    public async findAll(): Promise<Deal[]> {
         return this.dealRepositoryDB;
     }
 
-    public findOne(id: string): Deal {
+    public async findOne(id: string): Promise<Deal> {
         return this.dealRepositoryDB.find((deal: Deal) => {
             if (deal._id === id) {
                 return deal;
@@ -33,13 +33,13 @@ export class DealRepository {
         });
     }
 
-    public create(deal: Deal): Deal {
+    public async create(deal: Deal): Promise<Deal> {
         this.dealRepositoryDB.push(deal);
 
         return deal;
     }
 
-    public update(deal: Deal): Deal {
+    public async update(deal: Deal): Promise<Deal> {
         const dealIndex: number = this.dealRepositoryDB.findIndex((dealUpdate: Deal) => {
             if (dealUpdate._id === deal._id) {
                 return dealUpdate;
@@ -51,7 +51,7 @@ export class DealRepository {
         return this.dealRepositoryDB[dealIndex];
     }
 
-    public delete(id: string): Deal[] {
+    public async delete(id: string): Promise<Deal[]> {
         return this.dealRepositoryDB.filter((deal: Deal) => deal._id !== id);
     }
 }
