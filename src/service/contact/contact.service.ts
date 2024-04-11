@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { ContactRepository } from "../../repository";
+import { ContactRepository } from "../../interfaces";
 import { Contact } from "../../domain";
 
 @Injectable()

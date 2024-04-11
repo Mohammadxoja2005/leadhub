@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { DealRepository } from "../../repository";
+import { DealRepository } from "../../interfaces";
 import { Deal } from "../../domain";
 
 @Injectable()
