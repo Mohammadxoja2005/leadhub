@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { UserRepository } from "../../interfaces";
+import { UserRepository, UserService } from "../../interfaces";
 import { User } from "../../domain";
 import { repositoryTokens } from "../../common/tokens/repository.tokens";
 
 @Injectable()
-export class UserServiceImpl {
+export class UserServiceImpl implements UserService {
     constructor(@Inject(repositoryTokens.user) private readonly userRepository: UserRepository) {}
 
     public async createUser(user: User): Promise<User> {

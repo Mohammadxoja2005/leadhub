@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { ContactRepository } from "../../interfaces";
+import { ContactRepository, ContactService } from "../../interfaces";
 import { Contact } from "../../domain";
 import { repositoryTokens } from "../../common/tokens/repository.tokens";
 
 @Injectable()
-export class ContactServiceImpl {
+export class ContactServiceImpl implements ContactService {
     constructor(
         @Inject(repositoryTokens.contact) private readonly contactRepository: ContactRepository,
     ) {}

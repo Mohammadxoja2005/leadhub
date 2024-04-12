@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { LeadRepository } from "../../interfaces";
+import { LeadRepository, LeadService } from "../../interfaces";
 import { Lead } from "../../domain";
 import { repositoryTokens } from "../../common/tokens/repository.tokens";
 
 @Injectable()
-export class LeadServiceImpl {
+export class LeadServiceImpl implements LeadService {
     constructor(@Inject(repositoryTokens.lead) private readonly leadRepository: LeadRepository) {}
 
     public async createLead(lead: Lead): Promise<Lead> {
@@ -19,7 +19,7 @@ export class LeadServiceImpl {
         return await this.leadRepository.findOne(id);
     }
 
-    public async updateLead(id: string, lead: Lead): Promise<Lead> {
+    public async updateLead(lead: Lead): Promise<Lead> {
         return await this.leadRepository.update(lead);
     }
 
