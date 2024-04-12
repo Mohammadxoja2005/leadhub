@@ -1,10 +1,13 @@
-import { Repository } from "../index.interface";
 import { Contact } from "../../../domain";
 
-export interface ContactRepository extends Repository<Contact> {
+export interface ContactRepository {
     create(contact: Contact): Promise<Contact>;
 
     update(contact: Contact): Promise<Contact>;
 
     delete(id: string): Promise<Contact[]>;
+
+    findAll(): Promise<Contact[]>;
+
+    findOne(id: string): Promise<Contact>;
 }
