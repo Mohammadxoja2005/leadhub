@@ -19,7 +19,7 @@ export class UserController {
     }
 
     @Post("/login")
-    login(@Req() request: Request, @Res() response: Response) {
+    async login(@Req() request: Request, @Res() response: Response): Promise<string> {
         return "user login";
     }
 }
