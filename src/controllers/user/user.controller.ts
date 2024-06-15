@@ -1,11 +1,25 @@
-import { Controller, Get, Req } from "@nestjs/common";
+import { Controller, HttpStatus, Inject, Post, Req, Res, UsePipes } from "@nestjs/common";
+import { UserService } from "../../interfaces";
+import { serviceTokens } from "../../common/tokens/service.tokens";
+import { UserPipes } from "../../common/pipes/user.pipes";
+import { UserCreateSchema } from "../../common/schema/user/user-create.schema";
 
 @Controller("user")
 export class UserController {
-    constructor() {}
+    constructor(@Inject(serviceTokens.user) private readonly userService: UserService) {}
 
-    @Get()
-    findAll(@Req() request: Request): string {
-        return "all good";
+    @Post("/register")
+    @UsePipes(new UserPipes(UserCreateSchema))
+    async register(@Req() request: Request, @Res() response: Response): Promise<string> {
+        const result = await this.userService.createUser();
+
+        response.status(HttpStatus.CREATED).location({}).json();
+
+        return "user registered";
+    }
+
+    @Post("/login")
+    login(@Req() request: Request, @Res() response: Response) {
+        return "user login";
     }
 }
