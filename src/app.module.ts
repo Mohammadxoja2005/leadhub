@@ -8,6 +8,7 @@ import {
 } from "./repository";
 import { repositoryTokens } from "./common/tokens/repository.tokens";
 import { LeadServiceImpl, UserServiceImpl, DealServiceImpl, ContactServiceImpl } from "./service";
+import { serviceTokens } from "./common/tokens/service.tokens";
 
 @Module({
     controllers: [UserController],
@@ -28,10 +29,22 @@ import { LeadServiceImpl, UserServiceImpl, DealServiceImpl, ContactServiceImpl }
             provide: repositoryTokens.contact,
             useClass: ContactRepositoryImpl,
         },
-        UserServiceImpl,
-        LeadServiceImpl,
-        DealServiceImpl,
-        ContactServiceImpl,
+        {
+            provide: serviceTokens.user,
+            useClass: UserServiceImpl,
+        },
+        {
+            provide: serviceTokens.lead,
+            useClass: LeadServiceImpl,
+        },
+        {
+            provide: serviceTokens.deal,
+            useClass: DealServiceImpl,
+        },
+        {
+            provide: serviceTokens.contact,
+            useClass: ContactServiceImpl,
+        },
     ],
 })
 export class AppModule {}

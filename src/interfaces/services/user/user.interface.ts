@@ -1,13 +1,7 @@
-import { User } from "../../../domain";
+import { type UserCreate } from "./user-create.interface";
+import { type UserDelete } from "./user-delete.interface";
+import { type UserUpdate } from "./user-update.interface";
 
-export interface UserService {
-    createUser(user: User): Promise<User>;
+import { type UserRegister } from "../../../common/schema/user/user-register.schema";
 
-    updateUser(user: User): Promise<User>;
-
-    deleteUser(id: string): Promise<User[]>;
-
-    findAllUsers(): Promise<User[]>;
-
-    findOneUser(id: string): Promise<User>;
-}
+export interface UserService extends UserCreate<UserRegister>, UserDelete, UserUpdate {}
