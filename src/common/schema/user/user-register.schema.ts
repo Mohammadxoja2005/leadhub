@@ -9,8 +9,12 @@ export const UserRegisterSchema = z.object({
                     value: z.string(),
                 }),
                 z.object({
-                    name: z.literal("age"),
+                    name: z.literal("phone"),
                     value: z.number(),
+                }),
+                z.object({
+                    name: z.literal("email"),
+                    value: z.string(),
                 }),
             ]),
         })
