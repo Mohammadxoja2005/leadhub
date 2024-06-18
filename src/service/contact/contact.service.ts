@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { ContactRepository, ContactService } from "../../interfaces";
-import { Contact } from "../../domain";
+import { ContactRepository, type ContactService } from "../../interfaces";
+import { type Contact } from "../../domain";
 import { repositoryTokens } from "../../common/tokens/repository.tokens";
 
 @Injectable()

@@ -1,6 +1,6 @@
-import { Deal, DealStatus } from "../../domain";
-import { Injectable } from "@nestjs/common";
-import { DealRepository } from "../../interfaces";
+import { type Deal, DealStatus } from "../../domain";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { type DealRepository } from "../../interfaces";
 
 @Injectable()
 export class DealRepositoryImpl implements DealRepository {
@@ -27,11 +27,17 @@ export class DealRepositoryImpl implements DealRepository {
     }
 
     public async findOne(id: string): Promise<Deal> {
-        return this.dealRepositoryDB.find((deal: Deal) => {
+        const deal = this.dealRepositoryDB.find((deal: Deal) => {
             if (deal._id === id) {
                 return deal;
             }
         });
+
+        if (deal === undefined) {
+            throw new NotFoundException("Lead not found");
+        }
+
+        return deal;
     }
 
     public async create(deal: Deal): Promise<Deal> {

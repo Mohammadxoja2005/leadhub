@@ -8,10 +8,17 @@ import { type UserRegister } from "../../common/schema/user/user-register.schema
 export class UserServiceImpl implements UserService {
     constructor(@Inject(repositoryTokens.user) private readonly userRepository: UserRepository) {}
 
-    public async createUser(user: UserRegister): Promise<any> {
-        // const user = {};
+    public async createUser(userRegister: UserRegister): Promise<any> {
+        const user = userRegister.template.data.reduce(
+            (user, userInfo: { name: string; value: string }) => {
+                user[userInfo.name] = userInfo.value;
 
-        return await this.userRepository.create(user);
+                return user;
+            },
+            {},
+        );
+
+        return await this.userRepository.create(user as User);
     }
 
     public async updateUser(user: User): Promise<User> {

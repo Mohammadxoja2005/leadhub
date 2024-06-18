@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { DealRepository, DealService } from "../../interfaces";
-import { Deal } from "../../domain";
+import { DealRepository, type DealService } from "../../interfaces";
+import { type Deal } from "../../domain";
 import { repositoryTokens } from "../../common/tokens/repository.tokens";
 
 @Injectable()

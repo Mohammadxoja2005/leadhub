@@ -10,11 +10,15 @@ export const UserRegisterSchema = z.object({
                 }),
                 z.object({
                     name: z.literal("phone"),
-                    value: z.number(),
+                    value: z.string(),
                 }),
                 z.object({
                     name: z.literal("email"),
                     value: z.string(),
+                }),
+                z.object({
+                    name: z.literal("role"),
+                    value: z.union([z.literal("admin"), z.literal("regular")]),
                 }),
             ]),
         })

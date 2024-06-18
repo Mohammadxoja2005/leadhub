@@ -1,6 +1,6 @@
-import { User } from "../../domain";
-import { Injectable } from "@nestjs/common";
-import { UserRepository } from "../../interfaces/";
+import { type User } from "../../domain";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { type UserRepository } from "../../interfaces/";
 
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {
@@ -22,11 +22,17 @@ export class UserRepositoryImpl implements UserRepository {
     }
 
     public async findOne(id: string): Promise<User> {
-        return this.userRepositoryDB.find((user: User) => {
+        const user = this.userRepositoryDB.find((user: User) => {
             if (user._id === id) {
                 return user;
             }
         });
+
+        if (user === undefined) {
+            throw new NotFoundException("User does not exist");
+        }
+
+        return user;
     }
 
     public async create(user: User): Promise<User> {

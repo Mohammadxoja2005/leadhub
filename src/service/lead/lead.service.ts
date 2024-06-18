@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { LeadRepository, LeadService } from "../../interfaces";
-import { Lead } from "../../domain";
+import { LeadRepository, type LeadService } from "../../interfaces";
+import { type Lead } from "../../domain";
 import { repositoryTokens } from "../../common/tokens/repository.tokens";
 
 @Injectable()

@@ -1,6 +1,6 @@
-import { Contact } from "../../domain";
-import { Injectable } from "@nestjs/common";
-import { ContactRepository } from "../../interfaces";
+import { type Contact } from "../../domain";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { type ContactRepository } from "../../interfaces";
 
 @Injectable()
 export class ContactRepositoryImpl implements ContactRepository {
@@ -29,11 +29,17 @@ export class ContactRepositoryImpl implements ContactRepository {
     }
 
     public async findOne(id: string): Promise<Contact> {
-        return this.contactRepositoryDB.find((contact: Contact) => {
+        const contact = this.contactRepositoryDB.find((contact: Contact) => {
             if (contact._id === id) {
                 return contact;
             }
         });
+
+        if (contact === undefined) {
+            throw new NotFoundException("Contact not found");
+        }
+
+        return contact;
     }
 
     public async update(contact: Contact): Promise<Contact> {

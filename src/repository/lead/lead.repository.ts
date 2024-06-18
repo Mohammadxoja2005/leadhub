@@ -1,6 +1,6 @@
-import { Lead } from "../../domain";
-import { Injectable } from "@nestjs/common";
-import { LeadRepository } from "../../interfaces/";
+import { type Lead } from "../../domain";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { type LeadRepository } from "../../interfaces/";
 
 @Injectable()
 export class LeadRepositoryImpl implements LeadRepository {
@@ -27,11 +27,17 @@ export class LeadRepositoryImpl implements LeadRepository {
     }
 
     public async findOne(id: string): Promise<Lead> {
-        return this.leadRepositoryDB.find((lead: Lead) => {
+        const lead = this.leadRepositoryDB.find((lead: Lead) => {
             if (lead._id === id) {
                 return lead;
             }
         });
+
+        if (lead === undefined) {
+            throw new NotFoundException("Lead not found");
+        }
+
+        return lead;
     }
 
     public async create(lead: Lead): Promise<Lead> {

@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Inject, Post, Req, Res, UsePipes } from "@nestjs/common";
+import { Body, Controller, Inject, Post, Req, Res, UsePipes } from "@nestjs/common";
 import { UserService } from "../../interfaces";
 import { serviceTokens } from "../../common/tokens/service.tokens";
 import { UserPipes } from "../../common/pipes/user.pipes";
@@ -14,9 +14,8 @@ export class UserController {
     @Post("/register")
     @UsePipes(new UserPipes(UserRegisterSchema))
     async register(@Body() body: UserRegister, @Res() response: Response): Promise<void> {
-        const result = await this.userService.createUser(body);
+        await this.userService.createUser(body);
 
-        console.log(body);
         // response.status(HttpStatus.CREATED).location({}).json();
     }
 

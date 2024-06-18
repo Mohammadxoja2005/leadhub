@@ -1,13 +1,13 @@
-import { Lead } from "../../../domain";
+import { type Lead } from "../../../domain";
 
 export interface LeadService {
-    createLead(lead: Lead): Promise<Lead>;
+    createLead: (lead: Lead) => Promise<Lead>;
 
-    updateLead(lead: Lead): Promise<Lead>;
+    updateLead: (lead: Lead) => Promise<Lead>;
 
-    deleteLead(id: string): Promise<Lead[]>;
+    deleteLead: (id: string) => Promise<Lead[]>;
 
-    findAllLeads(): Promise<Lead[]>;
+    findAllLeads: () => Promise<Lead[]>;
 
-    findOneLead(id: string): Promise<Lead>;
+    findOneLead: (id: string) => Promise<Lead>;
 }

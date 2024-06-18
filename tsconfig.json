@@ -12,6 +12,7 @@
     "outDir": "build",
     "declaration": false,
     "skipLibCheck": true,
+    "strictNullChecks": true,
     "newLine": "lf",
     "lib": [
       "es2017",
@@ -22,7 +23,8 @@
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    ".eslintrc.js"
   ],
   "exclude": [
     "node_modules"
