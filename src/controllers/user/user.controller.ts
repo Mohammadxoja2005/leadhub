@@ -2,7 +2,8 @@ import { Body, Controller, Inject, Post, Req, Res, UsePipes } from "@nestjs/comm
 import { UserService } from "../../interfaces";
 import { serviceTokens } from "../../common/tokens/service.tokens";
 import { UserPipes } from "../../common/pipes/user.pipes";
-import { UserRegisterSchema, UserRegister } from "../../common/schema/user/user-register.schema";
+import { UserRegisterSchema } from "../../common/schema/user/user-register.schema";
+import { UserRegisterRequest } from "../../interfaces/services/user/user-create.interface";
 
 @Controller("user")
 export class UserController {
@@ -13,7 +14,7 @@ export class UserController {
 
     @Post("/register")
     @UsePipes(new UserPipes(UserRegisterSchema))
-    async register(@Body() body: UserRegister, @Res() response: Response): Promise<void> {
+    async register(@Body() body: UserRegisterRequest, @Res() response: Response): Promise<void> {
         await this.userService.createUser(body);
 
         // response.status(HttpStatus.CREATED).location({}).json();
