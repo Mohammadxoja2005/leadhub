@@ -9,7 +9,7 @@ import {
 import { repositoryTokens } from "./common/tokens/repository.tokens";
 import { LeadServiceImpl, UserServiceImpl, DealServiceImpl, ContactServiceImpl } from "./service";
 import { serviceTokens } from "./common/tokens/service.tokens";
-import { CollectionJsonHelperImpl } from "./helpers/collectionJsonHelper";
+import { CollectionJsonHelperImpl } from "./helpers/collection-json-helper";
 
 @Module({
     controllers: [UserController],

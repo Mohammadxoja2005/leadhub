@@ -6,7 +6,7 @@ import {
     UserRegisterRequest,
     UserRegisterResponse,
 } from "../../interfaces/services/user/user-create.interface";
-import { CollectionJsonHelper } from "../../helpers/collectionJsonHelper";
+import { CollectionJsonHelper } from "../../helpers/collection-json-helper";
 
 @Injectable()
 export class UserServiceImpl implements UserService {
