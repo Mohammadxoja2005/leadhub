@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { UserRepository, type UserService } from "../../interfaces";
 import { repositoryTokens } from "../../common/tokens/repository.tokens";
+import { helperTokens } from "../../common/tokens/helper.tokens";
 import { type User } from "../../domain";
 import {
     UserRegisterRequest,
