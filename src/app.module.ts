@@ -9,6 +9,7 @@ import {
 import { repositoryTokens } from "./common/tokens/repository.tokens";
 import { LeadServiceImpl, UserServiceImpl, DealServiceImpl, ContactServiceImpl } from "./service";
 import { serviceTokens } from "./common/tokens/service.tokens";
+import { CollectionJsonHelperImpl } from "./helpers/collectionJsonHelper";
 
 @Module({
     controllers: [UserController],
@@ -44,6 +45,10 @@ import { serviceTokens } from "./common/tokens/service.tokens";
         {
             provide: serviceTokens.contact,
             useClass: ContactServiceImpl,
+        },
+        {
+            provide: helperTokens.collectionJsonHelper,
+            useClass: CollectionJsonHelperImpl,
         },
     ],
 })

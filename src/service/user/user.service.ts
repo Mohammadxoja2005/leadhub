@@ -6,16 +6,22 @@ import {
     UserRegisterRequest,
     UserRegisterResponse,
 } from "../../interfaces/services/user/user-create.interface";
+import { CollectionJsonHelper } from "../../helpers/collectionJsonHelper";
 
 @Injectable()
 export class UserServiceImpl implements UserService {
-    constructor(@Inject(repositoryTokens.user) private readonly userRepository: UserRepository) {}
+    constructor(
+        @Inject(repositoryTokens.user)
+        private readonly userRepository: UserRepository,
+        @Inject(helperTokens.collectionJsonHelper)
+        private readonly collectionJsonHelper: CollectionJsonHelper,
+    ) {}
 
     public async createUser(userRegister: UserRegisterRequest): Promise<UserRegisterResponse> {
-        const user = userRegister.template.data;
-        const createdUser = this.userRepository.create(user as User);
+        const user = this.collectionJsonHelper.parseRequestJsonCollection(userRegister);
+        const createdUser = await this.userRepository.create(user as User);
 
-        return await createdUser;
+        return this.collectionJsonHelper.buildResponseJsonCollection<User>(createdUser);
     }
 
     public async updateUser(user: User): Promise<User> {

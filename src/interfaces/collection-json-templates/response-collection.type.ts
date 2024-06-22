@@ -1,15 +1,15 @@
 export type ResponseCollection<T> = {
     collection: {
-        version: "1.0";
+        version: string;
         href: string;
         items: Array<{
             href: string;
             data: T;
-            links: Array<{
+            links: {
                 href?: string;
                 rel?: string;
                 render?: string;
-            }>;
+            };
         }>;
     };
 };
