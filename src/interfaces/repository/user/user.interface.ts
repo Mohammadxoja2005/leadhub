@@ -9,5 +9,7 @@ export interface UserRepository {
 
     findAll: () => Promise<User[]>;
 
-    findOne: (id: string) => Promise<User>;
+    findById: (id: string) => Promise<User>;
+
+    findByUsernameOrEmail: (usernameOrEmail: string) => Promise<User>;
 }

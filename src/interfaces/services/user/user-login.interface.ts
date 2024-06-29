@@ -1,16 +1,12 @@
 import { RequestCollection } from "../../collection-json-templates/request-collection.type";
 import { ResponseCollection } from "../../collection-json-templates/response-collection.type";
 
-export type UserRegisterRequest = RequestCollection<{
-    name: string;
-    username: string;
+export type UserLoginRequest = RequestCollection<{
+    usernameOrEmail: string;
     password: string;
-    phone: string;
-    email: string;
-    role: "admin" | "regular";
 }>;
 
-export type UserRegisterResponse = ResponseCollection<{
+export type UserLoginResponse = ResponseCollection<{
     _id: string;
     name: string;
     phone: string;
@@ -18,6 +14,6 @@ export type UserRegisterResponse = ResponseCollection<{
     role: "admin" | "regular";
 }>;
 
-export interface UserCreate {
-    createUser: (user: UserRegisterRequest) => Promise<UserRegisterResponse>;
+export interface UserLogin {
+    loginUser: (user: UserLoginRequest) => Promise<UserLoginResponse | false>;
 }

@@ -4,6 +4,8 @@ export const UserRegisterSchema = z.object({
     template: z
         .object({
             data: z.object({
+                username: z.string(),
+                password: z.string(),
                 name: z.string(),
                 phone: z.string(),
                 email: z.string(),

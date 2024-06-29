@@ -10,6 +10,8 @@ export class UserRepositoryImpl implements UserRepository {
         this.userRepositoryDB = [
             {
                 _id: "5349b4ddd2781d08c09890f4",
+                username: "Muhammadxoja2005",
+                password: "12345",
                 name: "Muhammadxoja",
                 phone: "+998903580505",
                 email: "muhammadxojaofficial@gmail.com",
@@ -22,7 +24,13 @@ export class UserRepositoryImpl implements UserRepository {
         return this.userRepositoryDB;
     }
 
-    public async findOne(id: string): Promise<User> {
+    public async create(user: User): Promise<User> {
+        this.userRepositoryDB.push(user);
+
+        return user;
+    }
+
+    public async findById(id: string): Promise<User> {
         const user = this.userRepositoryDB.find((user: User) => {
             if (user._id === id) {
                 return user;
@@ -36,8 +44,18 @@ export class UserRepositoryImpl implements UserRepository {
         return user;
     }
 
-    public async create(user: User): Promise<User> {
-        this.userRepositoryDB.push(user);
+    public async findByUsernameOrEmail(usernameOrEmail: string): Promise<User> {
+        const user = this.userRepositoryDB.find((user: User) => {
+            if (user.username === usernameOrEmail) {
+                return user;
+            } else if (user.email === usernameOrEmail) {
+                return user;
+            }
+        });
+
+        if (user === undefined) {
+            throw new NotFoundException("User does not exist");
+        }
 
         return user;
     }
