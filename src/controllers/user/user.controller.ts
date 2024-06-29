@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Inject, Post, Req, Res, UsePipes } from "@nestjs/common";
+import { Body, Controller, HttpStatus, Inject, Post, Res, UsePipes } from "@nestjs/common";
 import { UserService } from "../../interfaces";
 import { serviceTokens } from "../../common/tokens/service.tokens";
 import { UserPipes } from "../../common/pipes/user.pipes";
@@ -36,6 +36,8 @@ export class UserController {
                     message: "User is unauthorized",
                 },
             });
+
+            return;
         }
 
         response.status(HttpStatus.OK).json(loggedUser);
