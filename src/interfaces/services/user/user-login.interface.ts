@@ -15,5 +15,7 @@ export type UserLoginResponse = ResponseCollection<{
 }>;
 
 export interface UserLogin {
-    loginUser: (user: UserLoginRequest) => Promise<UserLoginResponse | false>;
+    loginUser: (
+        user: UserLoginRequest,
+    ) => Promise<{ userLoginResponse: UserLoginResponse; token: string } | false>;
 }

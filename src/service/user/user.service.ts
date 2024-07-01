@@ -13,6 +13,7 @@ import {
     UserLoginRequest,
     UserLoginResponse,
 } from "../../interfaces/services/user/user-login.interface";
+import { sign } from "jsonwebtoken";
 
 @Injectable()
 export class UserServiceImpl implements UserService {
@@ -37,7 +38,9 @@ export class UserServiceImpl implements UserService {
         return this.collectionJsonHelper.buildResponseJsonCollection<User>(createdUser);
     }
 
-    public async loginUser(userLogin: UserLoginRequest): Promise<UserLoginResponse | false> {
+    public async loginUser(
+        userLogin: UserLoginRequest,
+    ): Promise<{ userLoginResponse: UserLoginResponse; token: string } | false> {
         const parsedUserLoginRequest =
             this.collectionJsonHelper.parseRequestJsonCollection(userLogin);
 
@@ -51,8 +54,15 @@ export class UserServiceImpl implements UserService {
                 user.password,
             );
 
+            const accessToken = sign(
+                { username: user.username, id: user._id },
+                "4e0e52bf313baf4977f3dc976d67bce8",
+            );
+
+            const userLoginResponse = this.collectionJsonHelper.buildResponseJsonCollection(user);
+
             if (isUserLoginPasswordMatched) {
-                return this.collectionJsonHelper.buildResponseJsonCollection(user);
+                return { userLoginResponse, token: accessToken };
             }
         } catch (error) {
             console.log(error);
