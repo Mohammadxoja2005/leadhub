@@ -1,71 +1,49 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { UserRepository, type UserService } from "../../interfaces";
 import { repositoryTokens } from "../../common/tokens/repository.tokens";
-import { helperTokens } from "../../common/tokens/helper.tokens";
 import { type User } from "../../domain";
-import {
-    UserRegisterRequest,
-    UserRegisterResponse,
-} from "../../interfaces/services/user/user-create.interface";
-import { CollectionJsonHelper } from "../../helpers/collection-json-helper";
+import { UserCreateInput } from "../../interfaces/services/user/user-create.interface";
 import * as bcrypt from "bcrypt";
-import {
-    UserLoginRequest,
-    UserLoginResponse,
-} from "../../interfaces/services/user/user-login.interface";
 import { sign } from "jsonwebtoken";
+import * as crypto from "node:crypto";
 
 @Injectable()
 export class UserServiceImpl implements UserService {
     constructor(
         @Inject(repositoryTokens.user)
         private readonly userRepository: UserRepository,
-        @Inject(helperTokens.collectionJsonHelper)
-        private readonly collectionJsonHelper: CollectionJsonHelper,
     ) {}
 
-    public async createUser(userRegister: UserRegisterRequest): Promise<UserRegisterResponse> {
-        const parsedUserRegisterRequest =
-            this.collectionJsonHelper.parseRequestJsonCollection(userRegister);
+    public async createUser(userRegister: UserCreateInput): Promise<User> {
+        userRegister.project_id = crypto.randomUUID();
 
-        parsedUserRegisterRequest.password = await bcrypt.hash(
-            parsedUserRegisterRequest.password,
-            10,
-        );
+        // TODO это _id только на время, после того как подключем настояшию базу, уберем это поле польностью
+        userRegister["_id"] = crypto.randomUUID();
 
-        const createdUser = await this.userRepository.create(parsedUserRegisterRequest as User);
+        userRegister.password = await bcrypt.hash(userRegister.password, 10);
 
-        return this.collectionJsonHelper.buildResponseJsonCollection<User>(createdUser);
+        return await this.userRepository.create(userRegister as User);
     }
 
     public async loginUser(
-        userLogin: UserLoginRequest,
-    ): Promise<{ userLoginResponse: UserLoginResponse; token: string } | false> {
-        const parsedUserLoginRequest =
-            this.collectionJsonHelper.parseRequestJsonCollection(userLogin);
-
+        usernameOrEmail: string,
+        password: string,
+    ): Promise<{ user: User; token: string } | false> {
         try {
-            const user = await this.userRepository.findByUsernameOrEmail(
-                parsedUserLoginRequest.usernameOrEmail,
-            );
+            const user = await this.userRepository.findByUsernameOrEmail(usernameOrEmail);
 
-            const isUserLoginPasswordMatched = await bcrypt.compare(
-                parsedUserLoginRequest.password,
-                user.password,
-            );
+            const isUserLoginPasswordMatched = await bcrypt.compare(password, user.password);
 
             const accessToken = sign(
-                { username: user.username, id: user._id },
-                "4e0e52bf313baf4977f3dc976d67bce8",
+                { username: user.username, user_id: user._id, project_id: user.project_id },
+                `${process.env.JWT_SECRET_KEY}`,
             );
 
-            const userLoginResponse = this.collectionJsonHelper.buildResponseJsonCollection(user);
-
             if (isUserLoginPasswordMatched) {
-                return { userLoginResponse, token: accessToken };
+                return { user, token: accessToken };
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
 
         return false;

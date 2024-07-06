@@ -6,4 +6,5 @@ export interface User {
     phone: string;
     email: string;
     role: "admin" | "regular";
+    project_id: string;
 }

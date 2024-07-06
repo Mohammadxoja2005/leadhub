@@ -9,21 +9,45 @@ export class LeadRepositoryImpl implements LeadRepository {
     constructor() {
         this.leadRepositoryDB = [
             {
-                _id: "5349b4ddd2781d08c09890f4",
-                first_name: "John",
-                last_name: "Doe",
-                organization: "google",
+                _id: "5349b4ddd2781108c09890f4",
+                name: "John Doe",
+                company: "google",
                 title: "lead for google",
-                value: 100.0,
                 phone: "+998905879038",
                 email: "johndoe@gmail.com",
                 date: new Date(),
+                project_id: "134",
+                user_id: "5349b4ddd2781d08c09890f4",
             },
         ];
     }
 
-    public async findAll(): Promise<Lead[]> {
-        return this.leadRepositoryDB;
+    public async findAllByUserId(id: string): Promise<Lead[]> {
+        const lead = this.leadRepositoryDB.filter((lead: Lead) => {
+            if (lead._id === id) {
+                return lead;
+            }
+        });
+
+        if (lead === undefined) {
+            throw new NotFoundException("Lead not found");
+        }
+
+        return lead;
+    }
+
+    public async findAllByUserIdAndProjectId(id: string, projectId: string): Promise<Lead[]> {
+        const lead = this.leadRepositoryDB.filter((lead: Lead) => {
+            if (lead._id === id && lead.project_id === projectId) {
+                return lead;
+            }
+        });
+
+        if (lead === undefined) {
+            throw new NotFoundException("Lead not found");
+        }
+
+        return lead;
     }
 
     public async findOne(id: string): Promise<Lead> {

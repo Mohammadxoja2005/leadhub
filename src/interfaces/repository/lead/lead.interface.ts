@@ -7,7 +7,9 @@ export interface LeadRepository {
 
     delete: (id: string) => Promise<Lead[]>;
 
-    findAll: () => Promise<Lead[]>;
+    findAllByUserId: (id: string) => Promise<Lead[]>;
+
+    findAllByUserIdAndProjectId: (id: string, projectId: string) => Promise<Lead[]>;
 
     findOne: (id: string) => Promise<Lead>;
 }

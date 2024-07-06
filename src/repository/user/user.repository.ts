@@ -16,6 +16,7 @@ export class UserRepositoryImpl implements UserRepository {
                 phone: "+998903580505",
                 email: "muhammadxojaofficial@gmail.com",
                 role: "admin",
+                project_id: "134",
             },
         ];
     }

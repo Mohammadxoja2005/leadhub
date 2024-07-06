@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { UserController } from "./controllers";
+import { UserController, LeadController } from "./controllers";
 import {
     ContactRepositoryImpl,
     DealRepositoryImpl,
@@ -9,11 +9,9 @@ import {
 import { repositoryTokens } from "./common/tokens/repository.tokens";
 import { LeadServiceImpl, UserServiceImpl, DealServiceImpl, ContactServiceImpl } from "./service";
 import { serviceTokens } from "./common/tokens/service.tokens";
-import { CollectionJsonHelperImpl } from "./helpers/collection-json-helper";
-import { helperTokens } from "./common/tokens/helper.tokens";
 
 @Module({
-    controllers: [UserController],
+    controllers: [UserController, LeadController],
     providers: [
         {
             provide: repositoryTokens.deal,
@@ -46,10 +44,6 @@ import { helperTokens } from "./common/tokens/helper.tokens";
         {
             provide: serviceTokens.contact,
             useClass: ContactServiceImpl,
-        },
-        {
-            provide: helperTokens.collectionJsonHelper,
-            useClass: CollectionJsonHelperImpl,
         },
     ],
 })
