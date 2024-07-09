@@ -15,7 +15,7 @@ export class UserServiceImpl implements UserService {
     ) {}
 
     public async createUser(userRegister: UserCreateInput): Promise<User> {
-        userRegister.project_id = crypto.randomUUID();
+        userRegister["project_id"] = crypto.randomUUID();
 
         // TODO это _id только на время, после того как подключем настояшию базу, уберем это поле польностью
         userRegister["_id"] = crypto.randomUUID();

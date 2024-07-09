@@ -17,12 +17,12 @@ export class LeadServiceImpl implements LeadService {
     public async findAllLeads(userId: string, projectId: string): Promise<Lead[]> {
         const user = await this.userRepository.findById(userId);
 
-        const foundedLeads =
+        const leads =
             user.role === "admin"
                 ? await this.leadRepository.findAllByUserId(userId)
                 : await this.leadRepository.findAllByUserIdAndProjectId(userId, projectId);
 
-        return foundedLeads;
+        return leads;
     }
 
     public async findOneLead(id: string): Promise<Lead> {
