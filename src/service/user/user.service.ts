@@ -44,6 +44,8 @@ export class UserServiceImpl implements UserService {
             }
         } catch (error) {
             console.error(error);
+
+            throw error;
         }
 
         return false;

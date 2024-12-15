@@ -31,6 +31,15 @@ export class LeadController {
         response.status(HttpStatus.OK).json(leads);
     }
 
+    @Get("/:id")
+    async findOne(@Req() request: Request, @Res() response: Response): Promise<void> {
+        const { id } = request.params;
+
+        const lead = await this.leadService.findOneLead(id);
+
+        response.status(HttpStatus.OK).json(lead);
+    }
+
     @Post("/create")
     async create(
         @Body() body: LeadCreateDto,
@@ -48,5 +57,23 @@ export class LeadController {
         const lead = await this.leadService.createLead(leadWithMetadata);
 
         response.status(HttpStatus.CREATED).json(lead);
+    }
+
+    @Post("update/:id")
+    async update(@Req() request: Request, @Res() response: Response): Promise<void> {
+        const body = request.body;
+
+        await this.leadService.updateLead(body);
+
+        response.status(HttpStatus.OK).json("lead updated");
+    }
+
+    @Post("delete/:id")
+    async delete(@Req() request: Request, @Res() response: Response): Promise<void> {
+        const { id } = request.params;
+
+        await this.leadService.deleteLead(id);
+
+        response.status(HttpStatus.OK).json("lead deleted");
     }
 }

@@ -7,7 +7,9 @@ export interface ContactRepository {
 
     delete: (id: string) => Promise<Contact[]>;
 
-    findAll: () => Promise<Contact[]>;
+    findAllByUserId: (userId: string) => Promise<Contact[]>;
+
+    findAllByUserIdAndProjectId: (userId: string, projectId: string) => Promise<Contact[]>;
 
     findOne: (id: string) => Promise<Contact>;
 }

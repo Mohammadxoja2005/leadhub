@@ -7,7 +7,7 @@ export interface ContactService {
 
     deleteContact: (id: string) => Promise<Contact[]>;
 
-    findAllContacts: () => Promise<Contact[]>;
+    findAllContacts: (userId: string, projectId: string) => Promise<Contact[]>;
 
     findOneContact: (id: string) => Promise<Contact>;
 }

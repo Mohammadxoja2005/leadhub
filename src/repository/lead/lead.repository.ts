@@ -36,9 +36,9 @@ export class LeadRepositoryImpl implements LeadRepository {
         return lead;
     }
 
-    public async findAllByUserIdAndProjectId(id: string, projectId: string): Promise<Lead[]> {
+    public async findAllByUserIdAndProjectId(userId: string, projectId: string): Promise<Lead[]> {
         const lead = this.leadRepositoryDB.filter((lead: Lead) => {
-            if (lead._id === id && lead.project_id === projectId) {
+            if (lead.user_id === userId && lead.project_id === projectId) {
                 return lead;
             }
         });

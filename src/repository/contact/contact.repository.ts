@@ -14,12 +14,38 @@ export class ContactRepositoryImpl implements ContactRepository {
                 organization: "google",
                 email: "john@gmail.com",
                 phone: "+998903470144",
+                project_id: "134",
+                user_id: "5349b4ddd2781d08c09890f4",
             },
         ];
     }
 
-    public async findAll(): Promise<Contact[]> {
-        return this.contactRepositoryDB;
+    public async findAllByUserId(userId: string): Promise<Contact[]> {
+        const contacts = this.contactRepositoryDB.filter((contact: Contact) => {
+            if (contact.user_id === userId) {
+                return contact;
+            }
+        });
+
+        if (contacts === undefined) {
+            throw new NotFoundException("Lead not found");
+        }
+
+        return contacts;
+    }
+
+    public async findAllByUserIdAndProjectId(userId: string, projectId): Promise<Contact[]> {
+        const contacts = this.contactRepositoryDB.filter((contact: Contact) => {
+            if (contact.user_id === userId && contact.project_id === projectId) {
+                return contact;
+            }
+        });
+
+        if (contacts === undefined) {
+            throw new NotFoundException("Lead not found");
+        }
+
+        return contacts;
     }
 
     public async create(contact: Contact): Promise<Contact> {
