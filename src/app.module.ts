@@ -1,54 +1,8 @@
 import { Module } from "@nestjs/common";
-import { UserController, LeadController } from "./application/api/controllers";
-import {
-    ContactRepositoryImpl,
-    DealRepositoryImpl,
-    UserRepositoryImpl,
-    LeadRepositoryImpl,
-} from "./infrastructure/repositories";
-import {
-    LeadServiceImpl,
-    UserServiceImpl,
-    DealServiceImpl,
-    ContactServiceImpl,
-} from "./application/services";
-import { Infrastructure, Application } from "./common/tokens";
+import { InfrastructureModule } from "./infrastructure/module";
+import { ApplicationModule } from "./application/module";
 
 @Module({
-    controllers: [UserController, LeadController],
-    providers: [
-        {
-            provide: Infrastructure.Repository.Deal,
-            useClass: DealRepositoryImpl,
-        },
-        {
-            provide: Infrastructure.Repository.Lead,
-            useClass: LeadRepositoryImpl,
-        },
-        {
-            provide: Infrastructure.Repository.User,
-            useClass: UserRepositoryImpl,
-        },
-        {
-            provide: Infrastructure.Repository.Contact,
-            useClass: ContactRepositoryImpl,
-        },
-        {
-            provide: Application.Service.User,
-            useClass: UserServiceImpl,
-        },
-        {
-            provide: Application.Service.Lead,
-            useClass: LeadServiceImpl,
-        },
-        {
-            provide: Application.Service.Deal,
-            useClass: DealServiceImpl,
-        },
-        {
-            provide: Application.Service.Contact,
-            useClass: ContactServiceImpl,
-        },
-    ],
+    imports: [InfrastructureModule, ApplicationModule],
 })
 export class AppModule {}
