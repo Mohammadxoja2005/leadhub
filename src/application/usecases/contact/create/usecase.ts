@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ContactService } from "../../../services";
 import { Application } from "../../../../common/tokens";
-import type { Contact } from "../../../../domain";
+import { Contact } from "../../../../domain";
 
 @Injectable()
 export class CreateContactUseCase {
