@@ -1,48 +1,52 @@
 import { Module } from "@nestjs/common";
-import { UserController, LeadController } from "./controllers";
+import { UserController, LeadController } from "./application/api/controllers";
 import {
     ContactRepositoryImpl,
     DealRepositoryImpl,
     UserRepositoryImpl,
     LeadRepositoryImpl,
-} from "./repository";
-import { repositoryTokens } from "./common/tokens/repository.tokens";
-import { LeadServiceImpl, UserServiceImpl, DealServiceImpl, ContactServiceImpl } from "./service";
-import { serviceTokens } from "./common/tokens/service.tokens";
+} from "./infrastructure/repositories";
+import {
+    LeadServiceImpl,
+    UserServiceImpl,
+    DealServiceImpl,
+    ContactServiceImpl,
+} from "./application/services";
+import { Infrastructure, Application } from "./common/tokens";
 
 @Module({
     controllers: [UserController, LeadController],
     providers: [
         {
-            provide: repositoryTokens.deal,
+            provide: Infrastructure.Repository.Deal,
             useClass: DealRepositoryImpl,
         },
         {
-            provide: repositoryTokens.lead,
+            provide: Infrastructure.Repository.Lead,
             useClass: LeadRepositoryImpl,
         },
         {
-            provide: repositoryTokens.user,
+            provide: Infrastructure.Repository.User,
             useClass: UserRepositoryImpl,
         },
         {
-            provide: repositoryTokens.contact,
+            provide: Infrastructure.Repository.Contact,
             useClass: ContactRepositoryImpl,
         },
         {
-            provide: serviceTokens.user,
+            provide: Application.Service.User,
             useClass: UserServiceImpl,
         },
         {
-            provide: serviceTokens.lead,
+            provide: Application.Service.Lead,
             useClass: LeadServiceImpl,
         },
         {
-            provide: serviceTokens.deal,
+            provide: Application.Service.Deal,
             useClass: DealServiceImpl,
         },
         {
-            provide: serviceTokens.contact,
+            provide: Application.Service.Contact,
             useClass: ContactServiceImpl,
         },
     ],
