@@ -12,11 +12,11 @@ export class ContactServiceImpl implements ContactService {
         @Inject(Infrastructure.Repository.User) private readonly userRepository: UserRepository,
     ) {}
 
-    public async createContact(contact: Contact): Promise<Contact> {
+    public async create(contact: Contact): Promise<Contact> {
         return await this.contactRepository.create(contact);
     }
 
-    public async findAllContacts(userId: string, projectId: string): Promise<Contact[]> {
+    public async findAll(userId: string, projectId: string): Promise<Contact[]> {
         const user = await this.userRepository.findById(userId);
 
         const contacts =
@@ -27,15 +27,15 @@ export class ContactServiceImpl implements ContactService {
         return contacts;
     }
 
-    public async findOneContact(id: string): Promise<Contact> {
+    public async findOne(id: string): Promise<Contact> {
         return await this.contactRepository.findOne(id);
     }
 
-    public async updateContact(contact: Contact): Promise<Contact> {
+    public async update(contact: Contact): Promise<Contact> {
         return await this.contactRepository.update(contact);
     }
 
-    public async deleteContact(id: string): Promise<Contact[]> {
+    public async delete(id: string): Promise<Contact[]> {
         return await this.contactRepository.delete(id);
     }
 }

@@ -38,7 +38,7 @@ export class ContactController {
             ...body,
         };
 
-        const contact = await this.contactService.createContact(contactWithMetadata);
+        const contact = await this.contactService.create(contactWithMetadata);
 
         response.status(HttpStatus.CREATED).json(contact);
     }
@@ -47,7 +47,7 @@ export class ContactController {
     async findAll(@Req() request: Request, @Res() response: Response): Promise<void> {
         const { user_id, project_id } = decode(request.header("Token") as string) as JwtPayload;
 
-        const contacts = await this.contactService.findAllContacts(user_id, project_id);
+        const contacts = await this.contactService.findAll(user_id, project_id);
 
         response.status(HttpStatus.OK).json(contacts);
     }
@@ -56,7 +56,7 @@ export class ContactController {
     async findOne(@Req() request: Request, @Res() response: Response): Promise<void> {
         const { id } = request.params;
 
-        const contact = await this.contactService.findOneContact(id);
+        const contact = await this.contactService.findOne(id);
 
         response.status(HttpStatus.OK).json(contact);
     }
@@ -65,7 +65,7 @@ export class ContactController {
     async update(@Req() request: Request, @Res() response: Response): Promise<void> {
         const body = request.body;
 
-        await this.contactService.updateContact(body);
+        await this.contactService.update(body);
 
         response.status(HttpStatus.OK).json("Contact updated");
     }
@@ -74,7 +74,7 @@ export class ContactController {
     async delete(@Req() request: Request, @Res() response: Response): Promise<void> {
         const { id } = request.params;
 
-        await this.contactService.deleteContact(id);
+        await this.contactService.delete(id);
 
         response.status(HttpStatus.OK).json("Contact deleted");
     }
