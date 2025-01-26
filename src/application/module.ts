@@ -7,8 +7,13 @@ import {
     CreateContactUseCase,
     DeleteContactUseCase,
     FindAllContactsUseCase,
+    FindAllLeadsUseCase,
     FindContactUseCase,
     UpdateContactUsecase,
+    CreateLeadUseCase,
+    FindLeadUsecase,
+    UpdateLeadUseCase,
+    DeleteLeadUsecase,
 } from "./usecases";
 
 @Module({
@@ -36,6 +41,11 @@ import {
         FindContactUseCase,
         UpdateContactUsecase,
         DeleteContactUseCase,
+        FindAllLeadsUseCase,
+        CreateLeadUseCase,
+        FindLeadUsecase,
+        UpdateLeadUseCase,
+        DeleteLeadUsecase,
     ],
     exports: [
         Application.Service.User,

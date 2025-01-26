@@ -1,43 +1,58 @@
-import {
-    Body,
-    Controller,
-    Get,
-    HttpStatus,
-    Inject,
-    Post,
-    Req,
-    Res,
-    UseGuards,
-} from "@nestjs/common";
-import { LeadService } from "../../../services";
-import { Application } from "../../../../common/tokens";
+import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "../../guard";
 import { Request, Response } from "express";
 import { decode, JwtPayload } from "jsonwebtoken";
 import { Input } from "./create";
 import { Lead } from "../../../../domain";
+import {
+    FindAllLeadsUseCase,
+    CreateLeadUseCase,
+    FindLeadUsecase,
+    UpdateLeadUseCase,
+    DeleteLeadUsecase,
+} from "../../../usecases";
 
 @Controller("lead")
 @UseGuards(AuthGuard)
 export class LeadController {
-    constructor(@Inject(Application.Service.Lead) private readonly leadService: LeadService) {}
+    constructor(
+        private readonly findAllLeadsUseCase: FindAllLeadsUseCase,
+        private readonly createLeadUseCase: CreateLeadUseCase,
+        private readonly findLeadUsecase: FindLeadUsecase,
+        private readonly updateLeadUseCase: UpdateLeadUseCase,
+        private readonly deleteLeadUsecase: DeleteLeadUsecase,
+    ) {}
 
     @Get()
     async findAll(@Req() request: Request, @Res() response: Response): Promise<void> {
-        const { user_id, project_id } = decode(request.header("Token") as string) as JwtPayload;
+        try {
+            const { user_id: userId, project_id: projectId } = decode(
+                request.header("Token") as string,
+            ) as JwtPayload;
 
-        const leads = await this.leadService.findAllLeads(user_id, project_id);
+            const leads = await this.findAllLeadsUseCase.execute(userId, projectId);
 
-        response.status(HttpStatus.OK).json(leads);
+            response.status(HttpStatus.OK).json(leads);
+        } catch (error) {
+            console.error("Error FindAllLeadsUseCase", error);
+
+            throw error;
+        }
     }
 
     @Get("/:id")
     async findOne(@Req() request: Request, @Res() response: Response): Promise<void> {
-        const { id } = request.params;
+        try {
+            const { id } = request.params;
 
-        const lead = await this.leadService.findOneLead(id);
+            const lead = await this.findLeadUsecase.execute(id);
 
-        response.status(HttpStatus.OK).json(lead);
+            response.status(HttpStatus.OK).json(lead);
+        } catch (error) {
+            console.error("Error FindLeadUsecase", error);
+
+            throw error;
+        }
     }
 
     @Post("/create")
@@ -46,34 +61,52 @@ export class LeadController {
         @Req() request: Request,
         @Res() response: Response,
     ): Promise<void> {
-        const { user_id, project_id } = decode(request.header("Token") as string) as JwtPayload;
+        try {
+            const { user_id, project_id } = decode(request.header("Token") as string) as JwtPayload;
 
-        const leadWithMetadata: Lead = {
-            user_id,
-            project_id,
-            ...body,
-        };
+            const leadWithMetadata: Lead = {
+                user_id,
+                project_id,
+                ...body,
+            };
 
-        const lead = await this.leadService.createLead(leadWithMetadata);
+            await this.createLeadUseCase.execute(leadWithMetadata);
 
-        response.status(HttpStatus.CREATED).json(lead);
+            response.status(HttpStatus.CREATED);
+        } catch (error) {
+            console.error("Error CreateLeadUseCase", error);
+
+            throw error;
+        }
     }
 
     @Post("update/:id")
     async update(@Req() request: Request, @Res() response: Response): Promise<void> {
-        const body = request.body;
+        try {
+            const body = request.body;
 
-        await this.leadService.updateLead(body);
+            await this.updateLeadUseCase.execute(body);
 
-        response.status(HttpStatus.OK).json("lead updated");
+            response.status(HttpStatus.OK);
+        } catch (error) {
+            console.error("Error UpdateLeadUseCase", error);
+
+            throw error;
+        }
     }
 
     @Post("delete/:id")
     async delete(@Req() request: Request, @Res() response: Response): Promise<void> {
-        const { id } = request.params;
+        try {
+            const { id } = request.params;
 
-        await this.leadService.deleteLead(id);
+            await this.deleteLeadUsecase.execute(id);
 
-        response.status(HttpStatus.OK).json("lead deleted");
+            response.status(HttpStatus.OK);
+        } catch (error) {
+            console.error("Error DeleteLeadUsecase", error);
+
+            throw error;
+        }
     }
 }
