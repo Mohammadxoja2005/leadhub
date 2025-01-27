@@ -14,6 +14,8 @@ import {
     FindLeadUsecase,
     UpdateLeadUseCase,
     DeleteLeadUsecase,
+    RegisterUserUseCase,
+    LoginUserUseCase,
 } from "./usecases";
 
 @Module({
@@ -46,6 +48,8 @@ import {
         FindLeadUsecase,
         UpdateLeadUseCase,
         DeleteLeadUsecase,
+        RegisterUserUseCase,
+        LoginUserUseCase,
     ],
     exports: [
         Application.Service.User,
