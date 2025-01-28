@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { Application } from "../common/tokens";
 import { ContactServiceImpl, DealServiceImpl, LeadServiceImpl, UserServiceImpl } from "./services";
-import { LeadController, UserController } from "./api/controllers";
+import { ContactController, LeadController, UserController } from "./api/controllers";
 import { InfrastructureModule } from "../infrastructure/module";
 import {
     CreateContactUseCase,
@@ -16,11 +16,16 @@ import {
     DeleteLeadUsecase,
     RegisterUserUseCase,
     LoginUserUseCase,
+    CreateDealUseCase,
+    FindAllDealsUseCase,
+    FindDealUseCase,
+    UpdateDealUseCase,
+    DeleteDealUseCase,
 } from "./usecases";
 
 @Module({
     imports: [InfrastructureModule],
-    controllers: [UserController, LeadController],
+    controllers: [UserController, LeadController, ContactController],
     providers: [
         {
             provide: Application.Service.User,
@@ -50,6 +55,11 @@ import {
         DeleteLeadUsecase,
         RegisterUserUseCase,
         LoginUserUseCase,
+        CreateDealUseCase,
+        FindAllDealsUseCase,
+        FindDealUseCase,
+        UpdateDealUseCase,
+        DeleteDealUseCase,
     ],
     exports: [
         Application.Service.User,
