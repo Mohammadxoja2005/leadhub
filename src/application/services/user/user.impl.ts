@@ -15,7 +15,7 @@ export class UserServiceImpl implements UserService {
     ) {}
 
     public async createUser(userRegister: User): Promise<User> {
-        userRegister["project_id"] = crypto.randomUUID();
+        userRegister["projectId"] = crypto.randomUUID();
 
         // TODO это _id только на время, после того как подключем настояшию базу, уберем это поле польностью
         userRegister["_id"] = crypto.randomUUID();
@@ -35,7 +35,7 @@ export class UserServiceImpl implements UserService {
             const isUserLoginPasswordMatched = await bcrypt.compare(password, user.password);
 
             const accessToken = sign(
-                { username: user.username, user_id: user._id, project_id: user.project_id },
+                { username: user.username, user_id: user._id, project_id: user.projectId },
                 `${process.env.JWT_SECRET_KEY}`,
             );
 

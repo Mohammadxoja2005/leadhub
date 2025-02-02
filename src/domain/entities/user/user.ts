@@ -1,10 +1,9 @@
 export type User = {
-    _id: string;
     username: string;
     password: string;
     name: string;
     phone: string;
     email: string;
     role: "admin" | "regular";
-    project_id: string;
+    projectId: string;
 };

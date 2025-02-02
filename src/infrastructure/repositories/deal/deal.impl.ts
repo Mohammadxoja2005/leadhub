@@ -15,10 +15,10 @@ export class DealRepositoryImpl implements DealRepository {
                 email: "johndoe@gmail.com",
                 company: "google",
                 value: 100.0,
-                date: new Date(),
+                closeDate: new Date(),
                 status: DealStatus.qualified,
-                project_id: "134",
-                user_id: "5349b4ddd2781d08c09890f4",
+                projectId: "134",
+                userId: "5349b4ddd2781d08c09890f4",
             },
         ];
     }

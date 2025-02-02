@@ -1,20 +1,22 @@
 export enum DealStatus {
-    qualified = "Qualified",
-    contact_made = "Contact_Made",
-    demo_scheduled = "Demo_Scheduled",
-    proposal_made = "Proposal_Made",
-    negotiation_started = "Negotiations_Started",
+    qualified = 1,
+    contactMade = 2,
+    demoScheduled = 3,
+    proposalMade = 4,
+    negotiationStarted = 5,
 }
 
 export type Deal = {
-    _id?: string;
-    name: string;
-    phone: string;
-    email: string;
+    title: string;
+    phone: string | null;
+    email: string | null;
+    person: string;
     company: string;
-    value: number;
-    date: Date;
+    projectId: string;
+    userId: string;
+    createdAt: number;
+    updatedAt: number;
+    value: number | null;
+    closeDate: number | null;
     status: DealStatus;
-    project_id: string;
-    user_id: string;
 };

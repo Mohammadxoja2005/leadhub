@@ -10,7 +10,7 @@ export class RegisterUserUseCase {
         private readonly userService: UserService,
     ) {}
 
-    public async execute(user: Omit<User, "_id" | "project_id" | "user_id">): Promise<void> {
+    public async execute(user: Omit<User, "_id" | "projectId" | "user_id">): Promise<void> {
         await this.userService.createUser(user);
     }
 }

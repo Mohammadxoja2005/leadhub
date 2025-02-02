@@ -10,14 +10,14 @@ export class LeadRepositoryImpl implements LeadRepository {
         this.leadRepositoryDB = [
             {
                 _id: "5349b4ddd2781108c09890f4",
-                name: "John Doe",
+                person: "John Doe",
                 company: "google",
                 title: "lead for google",
                 phone: "+998905879038",
                 email: "johndoe@gmail.com",
-                date: new Date(),
-                project_id: "134",
-                user_id: "5349b4ddd2781d08c09890f4",
+                closeDate: new Date(),
+                projectId: "134",
+                userId: "5349b4ddd2781d08c09890f4",
             },
         ];
     }
@@ -38,7 +38,7 @@ export class LeadRepositoryImpl implements LeadRepository {
 
     public async findAllByUserIdAndProjectId(userId: string, projectId: string): Promise<Lead[]> {
         const lead = this.leadRepositoryDB.filter((lead: Lead) => {
-            if (lead.user_id === userId && lead.project_id === projectId) {
+            if (lead.userId === userId && lead.projectId === projectId) {
                 return lead;
             }
         });
