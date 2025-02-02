@@ -14,15 +14,15 @@ export class ContactRepositoryImpl implements ContactRepository {
                 organization: "google",
                 email: "john@gmail.com",
                 phone: "+998903470144",
-                project_id: "134",
-                user_id: "5349b4ddd2781d08c09890f4",
+                projectId: "134",
+                userId: "5349b4ddd2781d08c09890f4",
             },
         ];
     }
 
     public async findAllByUserId(userId: string): Promise<Contact[]> {
         const contacts = this.contactRepositoryDB.filter((contact: Contact) => {
-            if (contact.user_id === userId) {
+            if (contact.userId === userId) {
                 return contact;
             }
         });
@@ -36,7 +36,7 @@ export class ContactRepositoryImpl implements ContactRepository {
 
     public async findAllByUserIdAndProjectId(userId: string, projectId): Promise<Contact[]> {
         const contacts = this.contactRepositoryDB.filter((contact: Contact) => {
-            if (contact.user_id === userId && contact.project_id === projectId) {
+            if (contact.userId === userId && contact.projectId === projectId) {
                 return contact;
             }
         });

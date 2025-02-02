@@ -33,8 +33,8 @@ export class ContactController {
             const { user_id, project_id } = decode(request.header("Token") as string) as JwtPayload;
 
             const contactWithMetadata: Contact = {
-                user_id,
-                project_id,
+                userId: user_id,
+                projectId: project_id,
                 ...body,
             };
 

@@ -1,9 +1,8 @@
 export type Contact = {
-    _id?: string;
     name: string;
-    organization: string;
-    email: string;
-    phone: string;
-    project_id: string;
-    user_id: string;
+    organization: string | null;
+    email: string | null;
+    phone: string | null;
+    projectId: string;
+    userId: string;
 };

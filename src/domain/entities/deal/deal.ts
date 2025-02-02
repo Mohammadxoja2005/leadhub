@@ -8,15 +8,12 @@ export enum DealStatus {
 
 export type Deal = {
     title: string;
-    phone: string | null;
-    email: string | null;
-    person: string;
-    company: string;
     projectId: string;
     userId: string;
     createdAt: number;
     updatedAt: number;
     value: number | null;
     closeDate: number | null;
+    contactId: string;
     status: DealStatus;
 };
