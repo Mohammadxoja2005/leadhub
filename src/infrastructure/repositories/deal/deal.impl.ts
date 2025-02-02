@@ -10,14 +10,15 @@ export class DealRepositoryImpl implements DealRepository {
         this.dealRepositoryDB = [
             {
                 _id: "5349b4ddd2781d08c09890f4",
-                first_name: "John",
-                last_name: "Doe",
+                name: "John Doe",
                 phone: "+998905879038",
                 email: "johndoe@gmail.com",
-                organization: "google",
+                company: "google",
                 value: 100.0,
                 date: new Date(),
                 status: DealStatus.qualified,
+                project_id: "134",
+                user_id: "5349b4ddd2781d08c09890f4",
             },
         ];
     }
