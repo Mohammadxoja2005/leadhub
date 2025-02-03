@@ -16,7 +16,7 @@ export class DealRepositoryImpl implements DealRepository {
                 company: "google",
                 value: 100.0,
                 closeDate: new Date(),
-                status: DealStatus.qualified,
+                status: DealStatus.Qualified,
                 projectId: "134",
                 userId: "5349b4ddd2781d08c09890f4",
             },

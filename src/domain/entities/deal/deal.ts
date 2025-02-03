@@ -1,9 +1,9 @@
 export enum DealStatus {
-    qualified = 1,
-    contactMade = 2,
-    demoScheduled = 3,
-    proposalMade = 4,
-    negotiationStarted = 5,
+    Qualified = 1,
+    ContactMade = 2,
+    DemoScheduled = 3,
+    ProposalMade = 4,
+    NegotiationStarted = 5,
 }
 
 export type Deal = {
