@@ -1,16 +1,22 @@
-import { IsString, IsDateString } from "class-validator";
+import { IsString, IsNumber, IsOptional } from "class-validator";
+import { Lead } from "../../../../../domain";
 
-export class Input {
+export class Input implements Lead {
     @IsString()
-    name: string;
+    public title: string;
+    @IsNumber()
+    @IsOptional()
+    public value: number | null;
+    @IsNumber()
+    @IsOptional()
+    public closeDate: number | null;
+    @IsNumber()
+    @IsOptional()
+    public createdDate: number | null;
     @IsString()
-    company: string;
+    public contactId: string;
     @IsString()
-    title: string;
+    public projectId: string;
     @IsString()
-    phone: string;
-    @IsString()
-    email: string;
-    @IsDateString()
-    date: Date;
+    public userId: string;
 }

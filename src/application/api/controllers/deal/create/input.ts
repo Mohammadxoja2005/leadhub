@@ -1,21 +1,24 @@
-import { IsDateString, IsNumber, IsString } from "class-validator";
-import { DealStatus } from "../../../../../domain";
+import { IsNumber, IsString, IsOptional } from "class-validator";
+import { DealStatus, Deal } from "../../../../../domain";
 
-export class Input {
+export class Input implements Deal {
     @IsString()
-    name: string;
-    @IsString()
-    company: string;
-    @IsString()
-    title: string;
-    @IsString()
-    phone: string;
-    @IsString()
-    email: string;
-    @IsDateString()
-    date: Date;
+    public title: string;
     @IsNumber()
-    value: number;
+    @IsOptional()
+    public value: number | null;
+    @IsNumber()
+    @IsOptional()
+    public closeDate: number | null;
+    @IsNumber()
+    @IsOptional()
+    public createdDate: number | null;
     @IsString()
-    status: DealStatus;
+    public contactId: string;
+    @IsString()
+    public projectId: string;
+    @IsString()
+    public userId: string;
+    @IsNumber()
+    public status: DealStatus;
 }

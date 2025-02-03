@@ -10,10 +10,9 @@ export type Deal = {
     title: string;
     projectId: string;
     userId: string;
-    createdAt: number;
-    updatedAt: number;
     value: number | null;
     closeDate: number | null;
+    createdDate: number | null;
     contactId: string;
     status: DealStatus;
 };

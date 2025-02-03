@@ -54,7 +54,7 @@ export class UserRepositoryImpl implements UserRepository {
             }
         });
 
-        if (user === undefined) {
+        if (!user) {
             throw new NotFoundException("User does not exist");
         }
 
