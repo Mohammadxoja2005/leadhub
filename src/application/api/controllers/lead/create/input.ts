@@ -1,7 +1,7 @@
 import { IsString, IsNumber, IsOptional } from "class-validator";
 import { Lead } from "../../../../../domain";
 
-export class Input implements Lead {
+export class Input implements Omit<Lead, "id" | "createdAt" | "updatedAt"> {
     @IsString()
     public title: string;
     @IsNumber()
@@ -10,9 +10,6 @@ export class Input implements Lead {
     @IsNumber()
     @IsOptional()
     public closeDate: number | null;
-    @IsNumber()
-    @IsOptional()
-    public createdDate: number | null;
     @IsString()
     public contactId: string;
     @IsString()

@@ -12,7 +12,7 @@ export type Deal = {
     userId: string;
     value: number | null;
     closeDate: number | null;
-    createdDate: number | null;
+    createdDate: number;
     contactId: string;
     status: DealStatus;
 };

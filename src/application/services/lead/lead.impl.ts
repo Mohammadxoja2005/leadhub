@@ -20,14 +20,14 @@ export class LeadServiceImpl implements LeadService {
 
         const leads =
             user.role === "admin"
-                ? await this.leadRepository.findAllByUserId(userId)
-                : await this.leadRepository.findAllByUserIdAndProjectId(userId, projectId);
+                ? await this.leadRepository.getAllByUserId(userId)
+                : await this.leadRepository.getAllByUserIdAndProjectId(userId, projectId);
 
         return leads;
     }
 
     public async findOneLead(id: string): Promise<Lead> {
-        return await this.leadRepository.findOne(id);
+        return await this.leadRepository.getById(id);
     }
 
     public async updateLead(lead: Lead): Promise<Lead> {

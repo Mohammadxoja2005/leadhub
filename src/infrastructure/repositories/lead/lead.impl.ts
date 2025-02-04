@@ -1,88 +1,103 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { Lead } from "../../../domain";
 import { LeadRepository } from "./lead";
+import { LeadDocument } from "./document";
+import { ObjectId } from "mongodb";
 
 @Injectable()
 export class LeadRepositoryImpl implements LeadRepository {
-    leadRepositoryDB: Lead[];
+    private readonly leadRepositoryDB: LeadDocument[];
 
     constructor() {
         this.leadRepositoryDB = [
             {
-                _id: "5349b4ddd2781108c09890f4",
-                person: "John Doe",
-                company: "google",
-                title: "lead for google",
-                phone: "+998905879038",
-                email: "johndoe@gmail.com",
-                closeDate: new Date(),
-                projectId: "134",
-                userId: "5349b4ddd2781d08c09890f4",
+                _id: new ObjectId("5349b4ddd2781108c09890f4"),
+                title: "Wan Du lead",
+                value: 700.99,
+                closeDate: Date.now(),
+                projectId: new ObjectId("5349b4ddd2781d08c09890f4"),
+                userId: new ObjectId("5349b4ddd2781d08c09890f4"),
+                contactId: new ObjectId("5349b4ddd2781d08c09890f4"),
+                createdAt: Date.now(),
+                updatedAt: Date.now(),
             },
         ];
     }
 
-    public async findAllByUserId(id: string): Promise<Lead[]> {
-        const lead = this.leadRepositoryDB.filter((lead: Lead) => {
-            if (lead._id === id) {
+    public async getAllByUserId(id: string): Promise<Lead[]> {
+        const documents = this.leadRepositoryDB.filter((document: LeadDocument) => {
+            if (document._id.toHexString() === id) {
+                return document;
+            }
+        });
+
+        if (!documents) {
+            throw new NotFoundException("Lead not found");
+        }
+
+        return documents.map((document) => this.documentEntity(document));
+    }
+
+    public async getAllByUserIdAndProjectId(userId: string, projectId: string): Promise<Lead[]> {
+        const documents = this.leadRepositoryDB.filter((lead: LeadDocument) => {
+            if (
+                lead.userId.toHexString() === userId &&
+                lead.projectId.toHexString() === projectId
+            ) {
                 return lead;
             }
         });
 
-        if (lead === undefined) {
+        if (!documents) {
             throw new NotFoundException("Lead not found");
         }
 
-        return lead;
+        return documents.map((document) => this.documentEntity(document));
     }
 
-    public async findAllByUserIdAndProjectId(userId: string, projectId: string): Promise<Lead[]> {
-        const lead = this.leadRepositoryDB.filter((lead: Lead) => {
-            if (lead.userId === userId && lead.projectId === projectId) {
-                return lead;
+    public async getById(id: string): Promise<Lead> {
+        const document = this.leadRepositoryDB.find((document: LeadDocument) => {
+            if (document._id.toHexString() === id) {
+                return document;
             }
         });
 
-        if (lead === undefined) {
+        if (!document) {
             throw new NotFoundException("Lead not found");
         }
 
-        return lead;
+        return this.documentEntity(document);
     }
 
-    public async findOne(id: string): Promise<Lead> {
-        const lead = this.leadRepositoryDB.find((lead: Lead) => {
-            if (lead._id === id) {
-                return lead;
+    public async create(lead: Lead): Promise<void> {
+        this.leadRepositoryDB.push(lead as never);
+    }
+
+    public async update(lead: Lead): Promise<void> {
+        const documentIndex = this.leadRepositoryDB.findIndex((document: LeadDocument) => {
+            if (document._id.toHexString() === lead.id) {
+                return document;
             }
         });
 
-        if (lead === undefined) {
-            throw new NotFoundException("Lead not found");
-        }
-
-        return lead;
+        this.leadRepositoryDB[documentIndex] = lead as never;
     }
 
-    public async create(lead: Lead): Promise<Lead> {
-        this.leadRepositoryDB.push(lead);
-
-        return lead;
+    public async delete(id: string): Promise<void> {
+        this.leadRepositoryDB.filter((document: LeadDocument) => document._id.toHexString() !== id);
     }
 
-    public async update(lead: Lead): Promise<Lead> {
-        const leadIndex: number = this.leadRepositoryDB.findIndex((leadUpdate: Lead) => {
-            if (leadUpdate._id === lead._id) {
-                return leadUpdate;
-            }
-        });
-
-        this.leadRepositoryDB[leadIndex] = lead;
-
-        return this.leadRepositoryDB[leadIndex];
-    }
-
-    public async delete(id: string): Promise<Lead[]> {
-        return this.leadRepositoryDB.filter((lead: Lead) => lead._id !== id);
+    private documentEntity(document: LeadDocument): Lead {
+        return {
+            id: document._id.toHexString(),
+            title: document.title,
+            value: document.value,
+            closeDate: document.closeDate,
+            projectId: document.projectId.toHexString(),
+            userId: document.userId.toHexString(),
+            contactId: document.contactId.toHexString(),
+            createdAt: document.createdAt,
+            updatedAt: document.updatedAt,
+        };
     }
 }

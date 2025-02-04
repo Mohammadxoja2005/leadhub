@@ -1,15 +1,15 @@
 import { type Lead } from "../../../domain";
 
 export interface LeadRepository {
-    create: (lead: Lead) => Promise<Lead>;
+    getAllByUserId: (id: string) => Promise<Lead[]>;
 
-    update: (lead: Lead) => Promise<Lead>;
+    getAllByUserIdAndProjectId: (id: string, projectId: string) => Promise<Lead[]>;
 
-    delete: (id: string) => Promise<Lead[]>;
+    getById: (id: string) => Promise<Lead>;
 
-    findAllByUserId: (id: string) => Promise<Lead[]>;
+    create: (lead: Lead) => Promise<void>;
 
-    findAllByUserIdAndProjectId: (id: string, projectId: string) => Promise<Lead[]>;
+    update: (lead: Lead) => Promise<void>;
 
-    findOne: (id: string) => Promise<Lead>;
+    delete: (id: string) => Promise<void>;
 }
