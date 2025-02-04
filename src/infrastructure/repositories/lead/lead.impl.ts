@@ -3,11 +3,13 @@ import { Lead } from "../../../domain";
 import { LeadRepository } from "./lead";
 import { LeadDocument } from "./document";
 import { ObjectId } from "mongodb";
+import { LeadWithContact } from "../../../application/services/lead/types";
 
 @Injectable()
 export class LeadRepositoryImpl implements LeadRepository {
     private readonly leadRepositoryDB: LeadDocument[];
 
+    // TODO need to return data of contacts in leads
     constructor() {
         this.leadRepositoryDB = [
             {
@@ -24,7 +26,7 @@ export class LeadRepositoryImpl implements LeadRepository {
         ];
     }
 
-    public async getAllByUserId(id: string): Promise<Lead[]> {
+    public async getAllByUserId(id: string): Promise<LeadWithContact[]> {
         const documents = this.leadRepositoryDB.filter((document: LeadDocument) => {
             if (document._id.toHexString() === id) {
                 return document;
@@ -38,7 +40,7 @@ export class LeadRepositoryImpl implements LeadRepository {
         return documents.map((document) => this.documentEntity(document));
     }
 
-    public async getAllByUserIdAndProjectId(userId: string, projectId: string): Promise<Lead[]> {
+    public async getAllByUserIdAndProjectId(userId: string, projectId: string): Promise<LeadWithContact[]> {
         const documents = this.leadRepositoryDB.filter((lead: LeadDocument) => {
             if (
                 lead.userId.toHexString() === userId &&
@@ -55,7 +57,7 @@ export class LeadRepositoryImpl implements LeadRepository {
         return documents.map((document) => this.documentEntity(document));
     }
 
-    public async getById(id: string): Promise<Lead> {
+    public async getById(id: string): Promise<LeadWithContact> {
         const document = this.leadRepositoryDB.find((document: LeadDocument) => {
             if (document._id.toHexString() === id) {
                 return document;
@@ -87,7 +89,7 @@ export class LeadRepositoryImpl implements LeadRepository {
         this.leadRepositoryDB.filter((document: LeadDocument) => document._id.toHexString() !== id);
     }
 
-    private documentEntity(document: LeadDocument): Lead {
+    private documentEntity(document: LeadDocument): LeadWithContact {
         return {
             id: document._id.toHexString(),
             title: document.title,
