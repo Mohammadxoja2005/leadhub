@@ -12,7 +12,7 @@ export class LeadRepositoryImpl implements LeadRepository {
         this.leadRepositoryDB = [
             {
                 _id: new ObjectId("5349b4ddd2781108c09890f4"),
-                title: "Wan Du lead",
+                title: "Dan Wu lead",
                 value: 700.99,
                 closeDate: Date.now(),
                 projectId: new ObjectId("5349b4ddd2781d08c09890f4"),
