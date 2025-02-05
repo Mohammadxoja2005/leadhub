@@ -1,13 +1,15 @@
-import { ObjectId } from "mongodb";
+import { HydratedDocument, Types } from "mongoose";
 
 export type LeadDocument = {
-    _id: ObjectId;
+    _id: Types.ObjectId;
     title: string;
     value: number | null;
     closeDate: number | null;
-    projectId: ObjectId;
-    userId: ObjectId;
-    contactId: ObjectId;
+    projectId: string;
+    userId: string;
+    contactId: string;
     createdAt: number;
     updatedAt: number;
 };
+
+export type LeadHydratedDocument = HydratedDocument<LeadDocument>;

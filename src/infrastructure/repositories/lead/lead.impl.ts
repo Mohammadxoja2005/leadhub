@@ -8,6 +8,7 @@ import { LeadWithContact } from "../../../application/services/lead/types";
 @Injectable()
 export class LeadRepositoryImpl implements LeadRepository {
     private readonly leadRepositoryDB: LeadDocument[];
+    private readonly contactRepositoryDB: any[];
 
     // TODO need to return data of contacts in leads
     constructor() {
@@ -17,11 +18,23 @@ export class LeadRepositoryImpl implements LeadRepository {
                 title: "Dan Wu lead",
                 value: 700.99,
                 closeDate: Date.now(),
-                projectId: new ObjectId("5349b4ddd2781d08c09890f4"),
-                userId: new ObjectId("5349b4ddd2781d08c09890f4"),
-                contactId: new ObjectId("5349b4ddd2781d08c09890f4"),
+                projectId: "5349b4ddd2781d08c09890f4",
+                userId: "5349b4ddd2781d08c09890f4",
+                contactId: "5349b4ddd2781d08c09890f4",
                 createdAt: Date.now(),
                 updatedAt: Date.now(),
+            },
+        ];
+
+        this.contactRepositoryDB = [
+            {
+                _id: "5349b4ddd2781d08c09890f4",
+                name: "Dan Wu",
+                organization: "Dan Wu corp",
+                email: "danwu@gmail.com",
+                phone: "+998903470144",
+                projectId: "5349b4ddd2781d08c09890f4",
+                userId: "5349b4ddd2781d08c09690f4",
             },
         ];
     }
@@ -40,12 +53,12 @@ export class LeadRepositoryImpl implements LeadRepository {
         return documents.map((document) => this.documentEntity(document));
     }
 
-    public async getAllByUserIdAndProjectId(userId: string, projectId: string): Promise<LeadWithContact[]> {
+    public async getAllByUserIdAndProjectId(
+        userId: string,
+        projectId: string,
+    ): Promise<LeadWithContact[]> {
         const documents = this.leadRepositoryDB.filter((lead: LeadDocument) => {
-            if (
-                lead.userId.toHexString() === userId &&
-                lead.projectId.toHexString() === projectId
-            ) {
+            if (lead.userId === userId && lead.projectId === projectId) {
                 return lead;
             }
         });
@@ -95,9 +108,9 @@ export class LeadRepositoryImpl implements LeadRepository {
             title: document.title,
             value: document.value,
             closeDate: document.closeDate,
-            projectId: document.projectId.toHexString(),
-            userId: document.userId.toHexString(),
-            contactId: document.contactId.toHexString(),
+            projectId: document.projectId,
+            userId: document.userId,
+            contactId: document.contactId,
             createdAt: document.createdAt,
             updatedAt: document.updatedAt,
         };

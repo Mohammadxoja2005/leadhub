@@ -6,8 +6,13 @@ import {
     LeadRepositoryImpl,
     UserRepositoryImpl,
 } from "./repositories";
+import { MongooseModule } from "@nestjs/mongoose";
+
 
 @Module({
+    imports: [
+        MongooseModule.forFeature[],
+    ],
     providers: [
         {
             provide: Infrastructure.Repository.Deal,
@@ -33,4 +38,5 @@ import {
         Infrastructure.Repository.Contact,
     ],
 })
-export class InfrastructureModule {}
+export class InfrastructureModule {
+}
