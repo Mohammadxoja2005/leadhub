@@ -1,47 +1,54 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { Lead } from "../../../domain";
 import { LeadRepository } from "./lead";
-import { LeadDocument } from "./document";
+import { LeadDocument, LeadHydratedDocument } from "./document";
 import { ObjectId } from "mongodb";
 import { LeadWithContact } from "../../../application/services/lead/types";
+import { Collections } from "../../schema";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
 
 @Injectable()
 export class LeadRepositoryImpl implements LeadRepository {
-    private readonly leadRepositoryDB: LeadDocument[];
-    private readonly contactRepositoryDB: any[];
+    private readonly leadRepositoryDB: LeadHydratedDocument[];
 
     // TODO need to return data of contacts in leads
-    constructor() {
+    constructor(
+        @InjectModel(Collections.Lead)
+        private readonly model: Model<LeadHydratedDocument>,
+    ) {
         this.leadRepositoryDB = [
             {
                 _id: new ObjectId("5349b4ddd2781108c09890f4"),
                 title: "Dan Wu lead",
                 value: 700.99,
                 closeDate: Date.now(),
-                projectId: "5349b4ddd2781d08c09890f4",
-                userId: "5349b4ddd2781d08c09890f4",
-                contactId: "5349b4ddd2781d08c09890f4",
+                project_id: new ObjectId("5349b4ddd2781d08c09890f4"),
+                user_id: new ObjectId("5349b4ddd2781d08c09890f4"),
+                contact_id: new ObjectId("5349b4ddd2781d08c09890f4"),
                 createdAt: Date.now(),
                 updatedAt: Date.now(),
-            },
-        ];
-
-        this.contactRepositoryDB = [
-            {
-                _id: "5349b4ddd2781d08c09890f4",
-                name: "Dan Wu",
-                organization: "Dan Wu corp",
-                email: "danwu@gmail.com",
-                phone: "+998903470144",
-                projectId: "5349b4ddd2781d08c09890f4",
-                userId: "5349b4ddd2781d08c09690f4",
             },
         ];
     }
 
     public async getAllByUserId(id: string): Promise<LeadWithContact[]> {
+        const documents = this.model.aggregate([
+            {
+                $lookup: {
+                    from: "contacts",
+                    localField: "contactId",
+                    foreignField: "_id",
+                    as: "contact",
+                },
+            },
+            {
+                $unwind: "$contact",
+            },
+        ]);
+
         const documents = this.leadRepositoryDB.filter((document: LeadDocument) => {
-            if (document._id.toHexString() === id) {
+            if (document.user_id.toHexString() === id) {
                 return document;
             }
         });
@@ -58,7 +65,10 @@ export class LeadRepositoryImpl implements LeadRepository {
         projectId: string,
     ): Promise<LeadWithContact[]> {
         const documents = this.leadRepositoryDB.filter((lead: LeadDocument) => {
-            if (lead.userId === userId && lead.projectId === projectId) {
+            if (
+                lead.user_id.toHexString() === userId &&
+                lead.project_id.toHexString() === projectId
+            ) {
                 return lead;
             }
         });
@@ -108,9 +118,9 @@ export class LeadRepositoryImpl implements LeadRepository {
             title: document.title,
             value: document.value,
             closeDate: document.closeDate,
-            projectId: document.projectId,
-            userId: document.userId,
-            contactId: document.contactId,
+            projectId: document.project_id.toHexString(),
+            userId: document.user_id.toHexString(),
+            contactId: document.contact_id.toHexString(),
             createdAt: document.createdAt,
             updatedAt: document.updatedAt,
         };

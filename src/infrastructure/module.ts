@@ -7,12 +7,11 @@ import {
     UserRepositoryImpl,
 } from "./repositories";
 import { MongooseModule } from "@nestjs/mongoose";
-
+import { LeadSchema } from "./repositories";
+import { Collections } from "./schema";
 
 @Module({
-    imports: [
-        MongooseModule.forFeature[],
-    ],
+    imports: [MongooseModule.forFeature([{ name: Collections.Lead, schema: LeadSchema }])],
     providers: [
         {
             provide: Infrastructure.Repository.Deal,
@@ -38,5 +37,4 @@ import { MongooseModule } from "@nestjs/mongoose";
         Infrastructure.Repository.Contact,
     ],
 })
-export class InfrastructureModule {
-}
+export class InfrastructureModule {}

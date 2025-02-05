@@ -1,13 +1,15 @@
-import { Schema } from "mongoose";
+import { Schema, Types } from "mongoose";
+import { LeadHydratedDocument } from "./document";
+import { Collections } from "../../schema";
 
-const LeadSchema = new Schema(
+export const LeadSchema = new Schema<LeadHydratedDocument>(
     {
-        title: { type: String, required: true },
+        title: String,
         value: { type: Number, default: null },
         closeDate: { type: Number, default: null },
-        projectId: { type: String, required: true },
-        userId: { type: String, required: true },
-        contactId: { type: String, required: true },
+        project_id: Types.ObjectId,
+        user_id: Types.ObjectId,
+        contact_id: Types.ObjectId,
     },
     {
         versionKey: false,
@@ -15,6 +17,6 @@ const LeadSchema = new Schema(
             createdAt: "created_at",
             updatedAt: "updated_at",
         },
+        collection: Collections.Lead,
     },
 );
-export { LeadSchema };
