@@ -32,8 +32,8 @@ export class LeadRepositoryImpl implements LeadRepository {
         ];
     }
 
-    public async getAllByUserId(id: string): Promise<LeadWithContact[]> {
-        const documents = this.model.aggregate([
+    public async getAllByUserId(userId: string): Promise<LeadWithContact[]> {
+        const documents = await this.model.aggregate([
             {
                 $lookup: {
                     from: "contacts",
@@ -47,11 +47,11 @@ export class LeadRepositoryImpl implements LeadRepository {
             },
         ]);
 
-        const documents = this.leadRepositoryDB.filter((document: LeadDocument) => {
-            if (document.user_id.toHexString() === id) {
-                return document;
-            }
-        });
+        // const documents = this.leadRepositoryDB.filter((document: LeadDocument) => {
+        //     if (document.user_id.toHexString() === userId) {
+        //         return document;
+        //     }
+        // });
 
         if (!documents) {
             throw new NotFoundException("Lead not found");
