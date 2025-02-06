@@ -33,19 +33,21 @@ export class LeadRepositoryImpl implements LeadRepository {
     }
 
     public async getAllByUserId(userId: string): Promise<LeadWithContact[]> {
-        const documents = await this.model.aggregate([
-            {
-                $lookup: {
-                    from: "contacts",
-                    localField: "contactId",
-                    foreignField: "_id",
-                    as: "contact",
+        const documents = await this.model
+            .aggregate<LeadWithContact>([
+                {
+                    $lookup: {
+                        from: "contacts",
+                        localField: "contactId",
+                        foreignField: "_id",
+                        as: "contact",
+                    },
                 },
-            },
-            {
-                $unwind: "$contact",
-            },
-        ]);
+                {
+                    $unwind: "$contact",
+                },
+            ])
+            .exec();
 
         // const documents = this.leadRepositoryDB.filter((document: LeadDocument) => {
         //     if (document.user_id.toHexString() === userId) {
