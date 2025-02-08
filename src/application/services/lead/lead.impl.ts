@@ -20,7 +20,7 @@ export class LeadServiceImpl implements LeadService {
 
         const leads =
             user.role === "admin"
-                ? await this.leadRepository.getAllByUserId(userId)
+                ? await this.leadRepository.getAllByProjectId(userId)
                 : await this.leadRepository.getAllByUserIdAndProjectId(userId, projectId);
 
         return leads;

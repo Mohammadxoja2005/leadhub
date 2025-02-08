@@ -5,4 +5,6 @@ export type Contact = {
     phone: string | null;
     projectId: string;
     userId: string;
+    createdAt: Date;
+    updatedAt: Date;
 };

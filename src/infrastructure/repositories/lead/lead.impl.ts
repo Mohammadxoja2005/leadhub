@@ -1,79 +1,99 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
 import { Lead } from "../../../domain";
 import { LeadRepository } from "./lead";
-import { LeadDocument, LeadHydratedDocument } from "./document";
+import { LeadDocument, LeadHydratedDocument, LeadWithContactDocument } from "./document";
 import { ObjectId } from "mongodb";
-import { LeadWithContact } from "../../../application/services/lead/types";
+import { LeadUpdate, LeadWithContact } from "../../../application/services/lead/types";
 import { Collections } from "../../schema";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
+import * as dayjs from "dayjs";
 
 @Injectable()
 export class LeadRepositoryImpl implements LeadRepository {
     private readonly leadRepositoryDB: LeadHydratedDocument[];
 
-    // TODO need to return data of contacts in leads
     constructor(
         @InjectModel(Collections.Lead)
         private readonly model: Model<LeadHydratedDocument>,
-    ) {
-        this.leadRepositoryDB = [
-            {
-                _id: new ObjectId("5349b4ddd2781108c09890f4"),
-                title: "Dan Wu lead",
-                value: 700.99,
-                closeDate: Date.now(),
-                project_id: new ObjectId("5349b4ddd2781d08c09890f4"),
-                user_id: new ObjectId("5349b4ddd2781d08c09890f4"),
-                contact_id: new ObjectId("5349b4ddd2781d08c09890f4"),
-                createdAt: Date.now(),
-                updatedAt: Date.now(),
-            },
-        ];
-    }
+    ) {}
 
-    public async getAllByUserId(userId: string): Promise<LeadWithContact[]> {
-        const documents = await this.model
-            .aggregate<LeadWithContact>([
-                {
-                    $lookup: {
-                        from: "contacts",
-                        localField: "contactId",
-                        foreignField: "_id",
-                        as: "contact",
-                    },
-                },
-                {
-                    $unwind: "$contact",
-                },
-            ])
-            .exec();
-
-        // const documents = this.leadRepositoryDB.filter((document: LeadDocument) => {
-        //     if (document.user_id.toHexString() === userId) {
-        //         return document;
-        //     }
-        // });
-
-        if (!documents) {
-            throw new NotFoundException("Lead not found");
-        }
-
-        return documents.map((document) => this.documentEntity(document));
+    public async getAllByProjectId(projectId: string): Promise<LeadWithContact[]> {
+        return this.getLeadsByFilter({ project_id: new ObjectId(projectId) });
     }
 
     public async getAllByUserIdAndProjectId(
         userId: string,
         projectId: string,
     ): Promise<LeadWithContact[]> {
-        const documents = this.leadRepositoryDB.filter((lead: LeadDocument) => {
-            if (
-                lead.user_id.toHexString() === userId &&
-                lead.project_id.toHexString() === projectId
-            ) {
-                return lead;
-            }
+        return this.getLeadsByFilter({
+            project_id: new ObjectId(projectId),
+            user_id: new ObjectId(userId),
         });
+    }
+
+    public async getById(id: string): Promise<LeadWithContact[]> {
+        return this.getLeadsByFilter({ _id: new ObjectId(id) });
+    }
+
+    public async create(lead: Lead): Promise<void> {
+        await this.model.create<LeadDocument>({
+            _id: new ObjectId(lead.id),
+            title: lead.title,
+            value: lead.value,
+            close_date: lead.closeDate ? new Date(lead.closeDate) : null,
+            project_id: new ObjectId(lead.projectId),
+            user_id: new ObjectId(lead.userId),
+            contact_id: new ObjectId(lead.contactId),
+            created_at: new Date(),
+            updated_at: new Date(),
+        });
+    }
+
+    public async update(lead: LeadUpdate): Promise<void> {
+        await this.model.updateOne({ _id: new ObjectId(lead.id) }, lead);
+    }
+
+    public async delete(id: string): Promise<void> {
+        await this.model.deleteOne({ _id: new ObjectId(id) });
+    }
+
+    private async getLeadsByFilter(
+        filter: Record<string, Types.ObjectId>,
+    ): Promise<LeadWithContact[]> {
+        const documents = await this.model
+            .aggregate<LeadWithContactDocument>([
+                { $match: filter },
+                {
+                    $lookup: {
+                        from: "contacts",
+                        localField: "contact_id",
+                        foreignField: "_id",
+                        as: "contact",
+                        pipeline: [
+                            {
+                                $project: {
+                                    name: 1,
+                                    phone: 1,
+                                    organization: 1,
+                                    email: 1,
+                                },
+                            },
+                        ],
+                    },
+                },
+                { $unwind: { path: "$contact", preserveNullAndEmptyArrays: true } },
+                {
+                    $set: {
+                        name: "$contact.name",
+                        phone: "$contact.phone",
+                        organization: "$contact.organization",
+                        email: "$contact.email",
+                    },
+                },
+                { $unset: "contact" },
+            ])
+            .exec();
 
         if (!documents) {
             throw new NotFoundException("Lead not found");
@@ -82,49 +102,21 @@ export class LeadRepositoryImpl implements LeadRepository {
         return documents.map((document) => this.documentEntity(document));
     }
 
-    public async getById(id: string): Promise<LeadWithContact> {
-        const document = this.leadRepositoryDB.find((document: LeadDocument) => {
-            if (document._id.toHexString() === id) {
-                return document;
-            }
-        });
-
-        if (!document) {
-            throw new NotFoundException("Lead not found");
-        }
-
-        return this.documentEntity(document);
-    }
-
-    public async create(lead: Lead): Promise<void> {
-        this.leadRepositoryDB.push(lead as never);
-    }
-
-    public async update(lead: Lead): Promise<void> {
-        const documentIndex = this.leadRepositoryDB.findIndex((document: LeadDocument) => {
-            if (document._id.toHexString() === lead.id) {
-                return document;
-            }
-        });
-
-        this.leadRepositoryDB[documentIndex] = lead as never;
-    }
-
-    public async delete(id: string): Promise<void> {
-        this.leadRepositoryDB.filter((document: LeadDocument) => document._id.toHexString() !== id);
-    }
-
-    private documentEntity(document: LeadDocument): LeadWithContact {
+    private documentEntity(document: LeadWithContactDocument): LeadWithContact {
         return {
             id: document._id.toHexString(),
             title: document.title,
             value: document.value,
-            closeDate: document.closeDate,
+            name: document.name,
+            organization: document.organization,
+            email: document.email,
+            phone: document.phone,
+            closeDate: dayjs(document.close_date).format("MMM D, YYYY"),
             projectId: document.project_id.toHexString(),
             userId: document.user_id.toHexString(),
             contactId: document.contact_id.toHexString(),
-            createdAt: document.createdAt,
-            updatedAt: document.updatedAt,
+            createdAt: dayjs(document.created_at).format("MMM D, YYYY"),
+            updatedAt: dayjs(document.updated_at).format("MMM D, YYYY"),
         };
     }
 }

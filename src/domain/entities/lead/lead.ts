@@ -2,10 +2,10 @@ export type Lead = {
     id: string;
     title: string;
     value: number | null;
-    closeDate: number | null;
+    closeDate: string | null;
     projectId: string;
     userId: string;
     contactId: string;
-    createdAt: number;
-    updatedAt: number;
+    createdAt: string;
+    updatedAt: string;
 };
