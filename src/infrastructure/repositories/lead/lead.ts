@@ -2,7 +2,7 @@ import {
     LeadCreate,
     LeadUpdate,
     LeadWithContact,
-} from "../../../application/api/controllers/lead/types";
+} from "app/application/api/controllers/lead/types";
 
 export interface LeadRepository {
     getAllByProjectId: (id: string) => Promise<LeadWithContact[]>;

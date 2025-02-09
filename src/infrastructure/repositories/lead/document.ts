@@ -1,22 +1,24 @@
 import { HydratedDocument, Types } from "mongoose";
 
-export class LeadDocument {
-    public _id: Types.ObjectId;
-    public title: string;
-    public value: number | null;
-    public close_date: Date | null;
-    public project_id: Types.ObjectId;
-    public user_id: Types.ObjectId;
-    public contact_id: Types.ObjectId;
-    public created_at: Date;
-    public updated_at: Date;
-}
+export type LeadDocument = {
+    _id: Types.ObjectId;
+    title: string;
+    value: number | null;
+    close_date: Date | null;
+    project_id: Types.ObjectId;
+    user_id: Types.ObjectId;
+    contact_id: Types.ObjectId;
+    created_at: Date;
+    updated_at: Date;
+};
 
-export class LeadWithContactDocument extends LeadDocument {
-    public name: string;
-    public organization: string | null;
-    public email: string | null;
-    public phone: string | null;
-}
+export type LeadCreateDocument = Omit<LeadDocument, "_id">;
+
+export type LeadWithContactDocument = {
+    name: string;
+    organization: string | null;
+    email: string | null;
+    phone: string | null;
+} & LeadDocument;
 
 export type LeadHydratedDocument = HydratedDocument<LeadDocument>;

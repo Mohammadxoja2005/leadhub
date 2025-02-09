@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { LeadService } from "../../../services";
-import { Application } from "../../../../common/tokens";
-import { LeadCreate } from "../../../api/controllers/lead/types";
+import { LeadService } from "app/application/services";
+import { Application } from "app/common";
+import { LeadCreate } from "app/application/api/controllers/lead/types";
 
 @Injectable()
 export class CreateLeadUseCase {

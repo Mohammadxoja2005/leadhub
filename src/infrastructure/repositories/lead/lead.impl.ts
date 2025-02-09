@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { LeadRepository } from "./lead";
-import { LeadDocument, LeadHydratedDocument, LeadWithContactDocument } from "./document";
+import { LeadCreateDocument, LeadHydratedDocument, LeadWithContactDocument } from "./document";
 import { ObjectId } from "mongodb";
 import {
     LeadCreate,
@@ -38,8 +38,7 @@ export class LeadRepositoryImpl implements LeadRepository {
     }
 
     public async create(lead: LeadCreate): Promise<void> {
-        await this.model.create<LeadDocument>({
-            _id: new ObjectId(lead.id),
+        await this.model.create<LeadCreateDocument>({
             title: lead.title,
             value: lead.value,
             close_date: lead.closeDate ? new Date(lead.closeDate) : null,

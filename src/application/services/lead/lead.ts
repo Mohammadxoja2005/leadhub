@@ -1,4 +1,8 @@
-import { LeadCreate, LeadUpdate, LeadWithContact } from "../../api/controllers/lead/types";
+import {
+    LeadCreate,
+    LeadUpdate,
+    LeadWithContact,
+} from "app/application/api/controllers/lead/types";
 
 export interface LeadService {
     create: (lead: LeadCreate) => Promise<void>;
