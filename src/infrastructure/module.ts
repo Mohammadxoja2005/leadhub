@@ -9,9 +9,21 @@ import {
 import { MongooseModule } from "@nestjs/mongoose";
 import { LeadSchema } from "./repositories";
 import { Collections } from "./schema";
+import { ContactSchema } from "app/infrastructure/repositories/contact/schema";
 
 @Module({
-    imports: [MongooseModule.forFeature([{ name: Collections.Lead, schema: LeadSchema }])],
+    imports: [
+        MongooseModule.forFeature([
+            {
+                name: Collections.Lead,
+                schema: LeadSchema,
+            },
+            {
+                name: Collections.Contact,
+                schema: ContactSchema,
+            },
+        ]),
+    ],
     providers: [
         {
             provide: Infrastructure.Repository.Deal,

@@ -21,14 +21,14 @@ export class ContactServiceImpl implements ContactService {
 
         const contacts =
             user.role === "admin"
-                ? await this.contactRepository.findAllByUserId(userId)
-                : await this.contactRepository.findAllByUserIdAndProjectId(userId, projectId);
+                ? await this.contactRepository.getAllByProjectId(userId)
+                : await this.contactRepository.getAllByUserIdAndProjectId(userId, projectId);
 
         return contacts;
     }
 
     public async findOne(id: string): Promise<Contact> {
-        return await this.contactRepository.findOne(id);
+        return await this.contactRepository.get(id);
     }
 
     public async update(contact: Contact): Promise<Contact> {

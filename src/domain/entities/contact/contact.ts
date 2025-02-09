@@ -1,4 +1,5 @@
 export type Contact = {
+    id: string;
     name: string;
     organization: string | null;
     email: string | null;

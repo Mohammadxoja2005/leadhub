@@ -1,71 +1,71 @@
 import { Contact } from "app/domain";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ContactRepository } from "./contact";
+import { InjectModel } from "@nestjs/mongoose";
+import { Collections } from "app/infrastructure/schema";
+import { Model } from "mongoose";
+import {
+    ContactCreateDocument,
+    ContactDocument,
+    ContactHydratedDocument,
+} from "app/infrastructure/repositories/contact/document";
+import { ObjectId } from "mongodb";
 
 @Injectable()
 export class ContactRepositoryImpl implements ContactRepository {
     contactRepositoryDB: Contact[];
 
-    constructor() {
-        this.contactRepositoryDB = [
-            {
-                _id: "5349b4ddd2781d08c09890f4",
-                name: "John",
-                organization: "google",
-                email: "john@gmail.com",
-                phone: "+998903470144",
-                projectId: "134",
-                userId: "5349b4ddd2781d08c09890f4",
-            },
-        ];
-    }
+    constructor(
+        @InjectModel(Collections.Contact)
+        private readonly model: Model<ContactHydratedDocument>,
+    ) {}
 
-    public async findAllByUserId(userId: string): Promise<Contact[]> {
-        const contacts = this.contactRepositoryDB.filter((contact: Contact) => {
-            if (contact.userId === userId) {
-                return contact;
-            }
-        });
+    public async getAllByProjectId(projectId: string): Promise<Contact[]> {
+        const contacts = await this.model
+            .find<ContactDocument>({ project_id: new ObjectId(projectId) })
+            .lean()
+            .exec();
 
-        if (contacts === undefined) {
-            throw new NotFoundException("Lead not found");
-        }
-
-        return contacts;
-    }
-
-    public async findAllByUserIdAndProjectId(userId: string, projectId): Promise<Contact[]> {
-        const contacts = this.contactRepositoryDB.filter((contact: Contact) => {
-            if (contact.userId === userId && contact.projectId === projectId) {
-                return contact;
-            }
-        });
-
-        if (contacts === undefined) {
-            throw new NotFoundException("Lead not found");
-        }
-
-        return contacts;
-    }
-
-    public async create(contact: Contact): Promise<Contact> {
-        this.contactRepositoryDB.push(contact);
-
-        return contact;
-    }
-
-    public async findOne(id: string): Promise<Contact> {
-        const contact = this.contactRepositoryDB.find((contact: Contact) => {
-            if (contact._id === id) {
-                return contact;
-            }
-        });
-
-        if (contact === undefined) {
+        if (!contacts) {
             throw new NotFoundException("Contact not found");
         }
 
-        return contact;
+        return contacts.map((contact: ContactDocument) => this.documentToEntity(contact));
+    }
+
+    public async getAllByUserIdAndProjectId(userId: string, projectId: string): Promise<Contact[]> {
+        const contacts = await this.model
+            .find<ContactDocument>({
+                user_id: new ObjectId(userId),
+                project_id: new ObjectId(projectId),
+            })
+            .lean()
+            .exec();
+
+        if (!contacts) {
+            throw new NotFoundException("Contact not found");
+        }
+
+        return contacts.map((contact: ContactDocument) => this.documentToEntity(contact));
+    }
+
+    public async create(contact: Contact): Promise<void> {
+        await this.model.create<ContactCreateDocument>(contact);
+    }
+
+    public async get(id: string): Promise<Contact[]> {
+        const contacts = await this.model
+            .find<ContactDocument>({
+                _id: new ObjectId(id),
+            })
+            .lean()
+            .exec();
+
+        if (!contacts) {
+            throw new NotFoundException("Contact not found");
+        }
+
+        return contacts.map((contact: ContactDocument) => this.documentToEntity(contact));
     }
 
     public async update(contact: Contact): Promise<Contact> {
@@ -85,4 +85,6 @@ export class ContactRepositoryImpl implements ContactRepository {
     public async delete(id: string): Promise<Contact[]> {
         return this.contactRepositoryDB.filter((contact: Contact) => contact._id !== id);
     }
+
+    private documentToEntity(document: ContactDocument): Contact {}
 }

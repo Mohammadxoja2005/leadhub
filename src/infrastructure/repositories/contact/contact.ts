@@ -1,15 +1,15 @@
-import { type Contact } from "../../../domain";
+import { Contact } from "app/domain";
 
 export interface ContactRepository {
-    create: (contact: Contact) => Promise<Contact>;
+    create: (contact: Contact) => Promise<void>;
 
-    update: (contact: Contact) => Promise<Contact>;
+    update: (contact: Contact) => Promise<void>;
 
-    delete: (id: string) => Promise<Contact[]>;
+    delete: (id: string) => Promise<void>;
 
-    findAllByUserId: (userId: string) => Promise<Contact[]>;
+    getAllByProjectId: (projectId: string) => Promise<Contact[]>;
 
-    findAllByUserIdAndProjectId: (userId: string, projectId: string) => Promise<Contact[]>;
+    getAllByUserIdAndProjectId: (userId: string, projectId: string) => Promise<Contact[]>;
 
-    findOne: (id: string) => Promise<Contact>;
+    get: (id: string) => Promise<Contact[]>;
 }
