@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { Application } from "../../../../common/tokens";
-import { DealService } from "../../../services";
-import { Deal } from "../../../../domain";
+import { Application } from "app/common";
+import { DealService } from "app/application/services";
+import { Deal } from "app/domain";
 
 @Injectable()
 export class UpdateDealUseCase {

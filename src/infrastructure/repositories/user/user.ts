@@ -1,4 +1,4 @@
-import { type User } from "../../../domain";
+import { type User } from "app/domain";
 
 export interface UserRepository {
     create: (user: User) => Promise<User>;

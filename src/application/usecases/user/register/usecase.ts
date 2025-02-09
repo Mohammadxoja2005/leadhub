@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { Application } from "../../../../common/tokens";
-import { UserService } from "../../../services";
-import { User } from "../../../../domain";
+import { Application } from "app/common";
+import { UserService } from "app/application/services";
+import { User } from "app/domain";
 
 @Injectable()
 export class RegisterUserUseCase {

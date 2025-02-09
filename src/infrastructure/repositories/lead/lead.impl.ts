@@ -7,8 +7,8 @@ import {
     LeadCreate,
     LeadUpdate,
     LeadWithContact,
-} from "../../../application/api/controllers/lead/types";
-import { Collections } from "../../schema";
+} from "app/application/api/controllers/lead/types";
+import { Collections } from "app/infrastructure/schema";
 import { Model, Types } from "mongoose";
 import * as dayjs from "dayjs";
 

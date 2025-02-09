@@ -1,4 +1,4 @@
-import { Contact } from "../../../domain";
+import { Contact } from "app/domain";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ContactRepository } from "./contact";
 

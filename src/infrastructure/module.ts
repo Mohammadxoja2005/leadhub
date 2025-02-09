@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { Infrastructure } from "../common/tokens";
+import { Infrastructure } from "app/common";
 import {
     ContactRepositoryImpl,
     DealRepositoryImpl,

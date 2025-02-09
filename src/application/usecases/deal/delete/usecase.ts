@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { Application } from "../../../../common/tokens";
-import { DealService } from "../../../services";
+import { Application } from "app/common";
+import { DealService } from "app/application/services";
 
 @Injectable()
 export class DeleteDealUseCase {

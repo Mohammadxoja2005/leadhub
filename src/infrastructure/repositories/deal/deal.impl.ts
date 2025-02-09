@@ -1,4 +1,4 @@
-import { Deal, DealStatus } from "../../../domain";
+import { Deal, DealStatus } from "app/domain";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { type DealRepository } from "./deal";
 

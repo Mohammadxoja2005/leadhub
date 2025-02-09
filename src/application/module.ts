@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { Application } from "../common/tokens";
+import { Application } from "app/common";
 import { ContactServiceImpl, DealServiceImpl, LeadServiceImpl, UserServiceImpl } from "./services";
 import { ContactController, LeadController, UserController } from "./api/controllers";
 import { InfrastructureModule } from "../infrastructure/module";

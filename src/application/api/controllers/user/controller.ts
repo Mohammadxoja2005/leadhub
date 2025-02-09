@@ -2,7 +2,7 @@ import { Body, Controller, HttpStatus, Post, Res } from "@nestjs/common";
 import { Response } from "express";
 import { Input as LoginInput } from "./login";
 import { Input as RegisterInput } from "./register";
-import { LoginUserUseCase, RegisterUserUseCase } from "../../../usecases";
+import { LoginUserUseCase, RegisterUserUseCase } from "app/application/usecases";
 
 @Controller("user")
 export class UserController {

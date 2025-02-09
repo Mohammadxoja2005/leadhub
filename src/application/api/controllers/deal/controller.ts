@@ -1,16 +1,16 @@
 import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "../../guard";
+import { Request, Response } from "express";
+import { Deal } from "app/domain";
+import { decode, JwtPayload } from "jsonwebtoken";
+import { Input } from "./create";
 import {
     CreateDealUseCase,
+    DeleteDealUseCase,
     FindAllDealsUseCase,
     FindDealUseCase,
     UpdateDealUseCase,
-    DeleteDealUseCase,
-} from "../../../usecases";
-import { Request, Response } from "express";
-import { Deal } from "../../../../domain";
-import { decode, JwtPayload } from "jsonwebtoken";
-import { Input } from "./create";
+} from "app/application/usecases";
+import { AuthGuard } from "app/application/api/guard";
 
 @Controller("deal")
 @UseGuards(AuthGuard)

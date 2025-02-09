@@ -1,16 +1,16 @@
 import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "../../guard";
+import { AuthGuard } from "app/application/api/guard";
 import { Request, Response } from "express";
 import { decode, JwtPayload } from "jsonwebtoken";
 import { Input } from "./create";
-import { Lead } from "../../../../domain";
+import { Lead } from "app/domain";
 import {
-    GetAllLeadsUseCase,
     CreateLeadUseCase,
+    DeleteLeadUsecase,
+    GetAllLeadsUseCase,
     GetLeadUsecase,
     UpdateLeadUseCase,
-    DeleteLeadUsecase,
-} from "../../../usecases";
+} from "app/application/usecases";
 
 @Controller("lead")
 @UseGuards(AuthGuard)

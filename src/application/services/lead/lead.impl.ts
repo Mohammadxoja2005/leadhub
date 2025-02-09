@@ -1,8 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { Infrastructure } from "../../../common/tokens";
+import { Infrastructure } from "app/common";
 import { LeadService } from "./lead";
-import { LeadRepository, UserRepository } from "../../../infrastructure/repositories";
-import { LeadCreate, LeadUpdate, LeadWithContact } from "../../api/controllers/lead/types";
+import { LeadRepository, UserRepository } from "app/infrastructure/repositories";
+import {
+    LeadCreate,
+    LeadUpdate,
+    LeadWithContact,
+} from "app/application/api/controllers/lead/types";
 
 @Injectable()
 export class LeadServiceImpl implements LeadService {

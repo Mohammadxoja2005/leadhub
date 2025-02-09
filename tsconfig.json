@@ -20,7 +20,12 @@
     ],
     "types": [
       "node"
-    ]
+    ],
+    "paths": {
+      "app/*": [
+        "./src/*"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts",

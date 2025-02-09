@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { UserRepository } from "../../../infrastructure/repositories";
+import { UserRepository } from "app/infrastructure/repositories";
 import { UserService } from "./user";
-import { Infrastructure } from "../../../common/tokens";
-import { type User } from "../../../domain";
+import { Infrastructure } from "app/common";
+import { type User } from "app/domain";
 import * as bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import * as crypto from "node:crypto";

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { type Contact } from "../../../domain";
-import { Infrastructure } from "../../../common/tokens";
-import { ContactRepository, UserRepository } from "../../../infrastructure/repositories";
+import { type Contact } from "app/domain";
+import { Infrastructure } from "app/common";
+import { ContactRepository, UserRepository } from "app/infrastructure/repositories";
 import { ContactService } from "./contact";
 
 @Injectable()

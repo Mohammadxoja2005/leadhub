@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from "@nestjs/common";
-import { Contact } from "../../../../domain";
+import { Contact } from "app/domain";
 import { Input } from "./create";
-import { AuthGuard } from "../../guard";
+import { AuthGuard } from "app/application/api/guard";
 import { decode, JwtPayload } from "jsonwebtoken";
 import { Request, Response } from "express";
 import {
@@ -10,7 +10,7 @@ import {
     FindAllContactsUseCase,
     FindContactUseCase,
     UpdateContactUsecase,
-} from "../../../usecases";
+} from "app/application/usecases";
 
 @Controller("contact")
 @UseGuards(AuthGuard)
