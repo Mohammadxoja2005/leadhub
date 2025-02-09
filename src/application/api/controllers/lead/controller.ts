@@ -11,7 +11,6 @@ import {
     GetLeadUsecase,
     UpdateLeadUseCase,
 } from "app/application/usecases";
-import { LeadCreate } from "app/application/api/controllers/lead/types";
 
 @Controller("lead")
 @UseGuards(AuthGuard)
