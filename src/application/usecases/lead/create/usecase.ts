@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { LeadService } from "../../../services";
 import { Application } from "../../../../common/tokens";
-import { Lead } from "../../../../domain";
+import { LeadCreate } from "../../../api/controllers/lead/types";
 
 @Injectable()
 export class CreateLeadUseCase {
@@ -10,7 +10,7 @@ export class CreateLeadUseCase {
         private readonly leadService: LeadService,
     ) {}
 
-    public async execute(lead: Lead): Promise<void> {
-        await this.leadService.createLead(lead);
+    public async execute(lead: LeadCreate): Promise<void> {
+        await this.leadService.create(lead);
     }
 }

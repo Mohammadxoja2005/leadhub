@@ -1,18 +1,19 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Lead } from "../../../domain";
 import { LeadRepository } from "./lead";
 import { LeadDocument, LeadHydratedDocument, LeadWithContactDocument } from "./document";
 import { ObjectId } from "mongodb";
-import { LeadUpdate, LeadWithContact } from "../../../application/services/lead/types";
+import {
+    LeadCreate,
+    LeadUpdate,
+    LeadWithContact,
+} from "../../../application/api/controllers/lead/types";
 import { Collections } from "../../schema";
 import { Model, Types } from "mongoose";
 import * as dayjs from "dayjs";
 
 @Injectable()
 export class LeadRepositoryImpl implements LeadRepository {
-    private readonly leadRepositoryDB: LeadHydratedDocument[];
-
     constructor(
         @InjectModel(Collections.Lead)
         private readonly model: Model<LeadHydratedDocument>,
@@ -36,7 +37,7 @@ export class LeadRepositoryImpl implements LeadRepository {
         return this.getLeadsByFilter({ _id: new ObjectId(id) });
     }
 
-    public async create(lead: Lead): Promise<void> {
+    public async create(lead: LeadCreate): Promise<void> {
         await this.model.create<LeadDocument>({
             _id: new ObjectId(lead.id),
             title: lead.title,
@@ -51,7 +52,13 @@ export class LeadRepositoryImpl implements LeadRepository {
     }
 
     public async update(lead: LeadUpdate): Promise<void> {
-        await this.model.updateOne({ _id: new ObjectId(lead.id) }, lead);
+        await this.model.updateOne(
+            {
+                _id: new ObjectId(lead.id),
+                updated_at: new Date(),
+            },
+            lead,
+        );
     }
 
     public async delete(id: string): Promise<void> {

@@ -1,13 +1,13 @@
-import { type Lead } from "../../../domain";
+import { LeadCreate, LeadUpdate, LeadWithContact } from "../../api/controllers/lead/types";
 
 export interface LeadService {
-    createLead: (lead: Lead) => Promise<Lead>;
+    create: (lead: LeadCreate) => Promise<void>;
 
-    updateLead: (lead: Lead) => Promise<Lead>;
+    update: (lead: LeadUpdate) => Promise<void>;
 
-    deleteLead: (id: string) => Promise<Lead[]>;
+    delete: (id: string) => Promise<void>;
 
-    findOneLead: (id: string) => Promise<Lead>;
+    get: (id: string) => Promise<LeadWithContact[]>;
 
-    findAllLeads: (userId: string, projectId: string) => Promise<Lead[]>;
+    getAll: (userId: string, projectId: string) => Promise<LeadWithContact[]>;
 }

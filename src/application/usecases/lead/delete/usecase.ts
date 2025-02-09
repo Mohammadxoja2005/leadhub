@@ -9,7 +9,7 @@ export class DeleteLeadUsecase {
         private readonly leadService: LeadService,
     ) {}
 
-    public async execute(leadId: string): Promise<void> {
-        await this.leadService.deleteLead(leadId);
+    public async execute(id: string): Promise<void> {
+        await this.leadService.delete(id);
     }
 }

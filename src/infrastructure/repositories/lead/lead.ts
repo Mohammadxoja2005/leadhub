@@ -1,5 +1,8 @@
-import { type Lead } from "../../../domain";
-import { LeadWithContact } from "../../../application/services/lead/types";
+import {
+    LeadCreate,
+    LeadUpdate,
+    LeadWithContact,
+} from "../../../application/api/controllers/lead/types";
 
 export interface LeadRepository {
     getAllByProjectId: (id: string) => Promise<LeadWithContact[]>;
@@ -8,9 +11,9 @@ export interface LeadRepository {
 
     getById: (id: string) => Promise<LeadWithContact[]>;
 
-    create: (lead: Lead) => Promise<void>;
+    create: (lead: LeadCreate) => Promise<void>;
 
-    update: (lead: Lead) => Promise<void>;
+    update: (lead: LeadUpdate) => Promise<void>;
 
     delete: (id: string) => Promise<void>;
 }

@@ -10,6 +10,8 @@ export const LeadSchema = new Schema<LeadHydratedDocument>(
         project_id: Types.ObjectId,
         user_id: Types.ObjectId,
         contact_id: Types.ObjectId,
+        updated_at: Date,
+        created_at: Date,
     },
     {
         versionKey: false,

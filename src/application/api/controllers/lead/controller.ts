@@ -5,9 +5,9 @@ import { decode, JwtPayload } from "jsonwebtoken";
 import { Input } from "./create";
 import { Lead } from "../../../../domain";
 import {
-    FindAllLeadsUseCase,
+    GetAllLeadsUseCase,
     CreateLeadUseCase,
-    FindLeadUsecase,
+    GetLeadUsecase,
     UpdateLeadUseCase,
     DeleteLeadUsecase,
 } from "../../../usecases";
@@ -16,9 +16,9 @@ import {
 @UseGuards(AuthGuard)
 export class LeadController {
     constructor(
-        private readonly findAllLeadsUseCase: FindAllLeadsUseCase,
+        private readonly findAllLeadsUseCase: GetAllLeadsUseCase,
         private readonly createLeadUseCase: CreateLeadUseCase,
-        private readonly findLeadUsecase: FindLeadUsecase,
+        private readonly findLeadUsecase: GetLeadUsecase,
         private readonly updateLeadUseCase: UpdateLeadUseCase,
         private readonly deleteLeadUsecase: DeleteLeadUsecase,
     ) {}
