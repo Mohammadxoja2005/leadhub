@@ -102,7 +102,7 @@ export class LeadController {
 
             response.status(HttpStatus.OK);
         } catch (error) {
-            console.error("Error DeleteLeadUsecase", error);
+            console.error("Error DeleteLeadUseCase", error);
 
             throw error;
         }
