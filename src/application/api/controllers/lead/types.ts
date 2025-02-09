@@ -1,6 +1,6 @@
 import { Contact, Lead } from "app/domain";
 
-export type LeadWithContact = Lead &
+export type LeadWithContact = Omit<Lead, "projectId" | "userId"> &
     Omit<Contact, "projectId" | "userId" | "createdAt" | "updatedAt">;
 
 export type LeadUpdate = { id: string } & Partial<

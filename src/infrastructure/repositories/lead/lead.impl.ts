@@ -118,8 +118,6 @@ export class LeadRepositoryImpl implements LeadRepository {
             email: document.email,
             phone: document.phone,
             closeDate: dayjs(document.close_date).format("MMM D, YYYY"),
-            projectId: document.project_id.toHexString(),
-            userId: document.user_id.toHexString(),
             contactId: document.contact_id.toHexString(),
             createdAt: dayjs(document.created_at).format("MMM D, YYYY"),
             updatedAt: dayjs(document.updated_at).format("MMM D, YYYY"),
