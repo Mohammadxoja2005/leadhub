@@ -14,23 +14,38 @@ import * as dayjs from "dayjs";
 
 @Injectable()
 export class LeadRepositoryImpl implements LeadRepository {
+    private readonly limit = 20;
+
     constructor(
         @InjectModel(Collections.Lead)
         private readonly model: Model<LeadHydratedDocument>,
     ) {}
 
-    public async getAllByProjectId(projectId: string): Promise<LeadWithContact[]> {
-        return this.getLeadsByFilter({ project_id: new ObjectId(projectId) });
+    public async getAllByProjectId(params: {
+        projectId: string;
+        meta: { page: string };
+    }): Promise<LeadWithContact[]> {
+        const { projectId } = params;
+        const { page } = params.meta;
+
+        return this.getLeadsByFilter({ project_id: new ObjectId(projectId) }, page);
     }
 
-    public async getAllByUserIdAndProjectId(
-        userId: string,
-        projectId: string,
-    ): Promise<LeadWithContact[]> {
-        return this.getLeadsByFilter({
-            project_id: new ObjectId(projectId),
-            user_id: new ObjectId(userId),
-        });
+    public async getAllByUserIdAndProjectId(params: {
+        projectId: string;
+        userId: string;
+        meta: { page: string };
+    }): Promise<LeadWithContact[]> {
+        const { projectId, userId } = params;
+        const { page } = params.meta;
+
+        return this.getLeadsByFilter(
+            {
+                project_id: new ObjectId(projectId),
+                user_id: new ObjectId(userId),
+            },
+            page,
+        );
     }
 
     public async getById(id: string): Promise<LeadWithContact[]> {
@@ -66,7 +81,11 @@ export class LeadRepositoryImpl implements LeadRepository {
 
     private async getLeadsByFilter(
         filter: Record<string, Types.ObjectId>,
+        page?: string,
     ): Promise<LeadWithContact[]> {
+        const pageNumber = page ? parseInt(page) : 1;
+        const skip = (pageNumber - 1) * this.limit;
+
         const documents = await this.model
             .aggregate<LeadWithContactDocument>([
                 { $match: filter },
@@ -99,6 +118,8 @@ export class LeadRepositoryImpl implements LeadRepository {
                 },
                 { $unset: "contact" },
             ])
+            .skip(skip)
+            .limit(this.limit)
             .exec();
 
         if (!documents) {

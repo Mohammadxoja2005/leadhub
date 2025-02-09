@@ -13,5 +13,9 @@ export interface LeadService {
 
     get: (id: string) => Promise<LeadWithContact[]>;
 
-    getAll: (userId: string, projectId: string) => Promise<LeadWithContact[]>;
+    getAll: (params: {
+        projectId: string;
+        userId: string;
+        meta: { page: string };
+    }) => Promise<LeadWithContact[]>;
 }

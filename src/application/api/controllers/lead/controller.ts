@@ -29,8 +29,13 @@ export class LeadController {
             const { user_id: userId, project_id: projectId } = decode(
                 request.header("Token") as string,
             ) as JwtPayload;
+            const page = request.query.page as string;
 
-            const leads = await this.getAllLeadsUseCase.execute(userId, projectId);
+            const leads = await this.getAllLeadsUseCase.execute({
+                userId,
+                projectId,
+                meta: { page: page },
+            });
 
             response.status(HttpStatus.OK).json(leads);
         } catch (error) {

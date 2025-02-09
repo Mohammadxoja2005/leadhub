@@ -19,12 +19,17 @@ export class LeadServiceImpl implements LeadService {
         await this.leadRepository.create(lead);
     }
 
-    public async getAll(userId: string, projectId: string): Promise<LeadWithContact[]> {
+    public async getAll(params: {
+        projectId: string;
+        userId: string;
+        meta: { page: string };
+    }): Promise<LeadWithContact[]> {
+        const { projectId, userId, meta } = params;
         const user = await this.userRepository.findById(userId);
 
         return user.role === "admin"
-            ? this.leadRepository.getAllByProjectId(projectId)
-            : this.leadRepository.getAllByUserIdAndProjectId(userId, projectId);
+            ? this.leadRepository.getAllByProjectId({ projectId, meta })
+            : this.leadRepository.getAllByUserIdAndProjectId({ userId, projectId, meta });
     }
 
     public async get(id: string): Promise<LeadWithContact[]> {

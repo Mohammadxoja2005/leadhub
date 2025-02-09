@@ -5,9 +5,16 @@ import {
 } from "app/application/api/controllers/lead/types";
 
 export interface LeadRepository {
-    getAllByProjectId: (id: string) => Promise<LeadWithContact[]>;
+    getAllByProjectId: (params: {
+        projectId: string;
+        meta: { page: string };
+    }) => Promise<LeadWithContact[]>;
 
-    getAllByUserIdAndProjectId: (id: string, projectId: string) => Promise<LeadWithContact[]>;
+    getAllByUserIdAndProjectId: (params: {
+        projectId: string;
+        userId: string;
+        meta: { page: string };
+    }) => Promise<LeadWithContact[]>;
 
     getById: (id: string) => Promise<LeadWithContact[]>;
 

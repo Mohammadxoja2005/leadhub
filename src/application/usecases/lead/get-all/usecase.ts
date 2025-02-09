@@ -10,7 +10,11 @@ export class GetAllLeadsUseCase {
         private readonly leadService: LeadService,
     ) {}
 
-    public async execute(userId: string, projectId: string): Promise<LeadWithContact[]> {
-        return this.leadService.getAll(userId, projectId);
+    public async execute(params: {
+        userId: string;
+        projectId: string;
+        meta: { page: string };
+    }): Promise<LeadWithContact[]> {
+        return this.leadService.getAll(params);
     }
 }
