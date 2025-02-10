@@ -1,13 +1,18 @@
-import { type Contact } from "../../../domain";
+import { type Contact } from "app/domain";
+import { ContactCreate, ContactUpdate } from "app/application/api/controllers/contact/types";
 
 export interface ContactService {
-    create: (contact: Contact) => Promise<Contact>;
+    create: (contact: ContactCreate) => Promise<void>;
 
-    update: (contact: Contact) => Promise<Contact>;
+    update: (contact: ContactUpdate) => Promise<void>;
 
-    delete: (id: string) => Promise<Contact[]>;
+    delete: (id: string) => Promise<void>;
 
-    findAll: (userId: string, projectId: string) => Promise<Contact[]>;
+    getAll: (params: {
+        userId: string;
+        projectId: string;
+        meta: { page: string };
+    }) => Promise<Contact[]>;
 
-    findOne: (id: string) => Promise<Contact>;
+    get: (id: string) => Promise<Contact[]>;
 }

@@ -4,7 +4,7 @@ import { ContactService } from "app/application/services";
 import { Contact } from "app/domain";
 
 @Injectable()
-export class UpdateContactUsecase {
+export class UpdateContactUseCase {
     constructor(
         @Inject(Application.Service.Contact)
         private contactService: ContactService,

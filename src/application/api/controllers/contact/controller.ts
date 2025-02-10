@@ -9,7 +9,7 @@ import {
     DeleteContactUseCase,
     FindAllContactsUseCase,
     FindContactUseCase,
-    UpdateContactUsecase,
+    UpdateContactUseCase,
 } from "app/application/usecases";
 
 @Controller("contact")
@@ -19,7 +19,7 @@ export class ContactController {
         private readonly createContactUseCase: CreateContactUseCase,
         private readonly findAllContactsUseCase: FindAllContactsUseCase,
         private readonly findContactUseCase: FindContactUseCase,
-        private readonly updateContactUseCase: UpdateContactUsecase,
+        private readonly updateContactUseCase: UpdateContactUseCase,
         private readonly deleteContactUseCase: DeleteContactUseCase,
     ) {}
 

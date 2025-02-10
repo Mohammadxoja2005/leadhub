@@ -14,8 +14,6 @@ import * as dayjs from "dayjs";
 
 @Injectable()
 export class LeadRepositoryImpl implements LeadRepository {
-    private readonly limit = 20;
-
     constructor(
         @InjectModel(Collections.Lead)
         private readonly model: Model<LeadHydratedDocument>,
@@ -83,8 +81,9 @@ export class LeadRepositoryImpl implements LeadRepository {
         filter: Record<string, Types.ObjectId>,
         page?: string,
     ): Promise<LeadWithContact[]> {
+        const LIMIT = 20;
         const pageNumber = page ? parseInt(page) : 1;
-        const skip = (pageNumber - 1) * this.limit;
+        const skip = (pageNumber - 1) * LIMIT;
 
         const documents = await this.model
             .aggregate<LeadWithContactDocument>([
@@ -119,7 +118,7 @@ export class LeadRepositoryImpl implements LeadRepository {
                 { $unset: "contact" },
             ])
             .skip(skip)
-            .limit(this.limit)
+            .limit(LIMIT)
             .exec();
 
         if (!documents) {
