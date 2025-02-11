@@ -1,5 +1,8 @@
-import { Contact } from "app/domain";
-import { ContactCreate, ContactUpdate } from "app/application/api/controllers/contact/types";
+import {
+    ContactCreate,
+    ContactUpdate,
+    ContactBase,
+} from "app/application/api/controllers/contact/types";
 
 export interface ContactRepository {
     create: (contact: ContactCreate) => Promise<void>;
@@ -11,13 +14,13 @@ export interface ContactRepository {
     getAllByProjectId: (params: {
         projectId: string;
         meta: { page: string };
-    }) => Promise<Contact[]>;
+    }) => Promise<ContactBase[]>;
 
     getAllByUserIdAndProjectId: (params: {
         userId: string;
         projectId: string;
         meta: { page: string };
-    }) => Promise<Contact[]>;
+    }) => Promise<ContactBase[]>;
 
-    get: (id: string) => Promise<Contact[]>;
+    get: (id: string) => Promise<ContactBase[]>;
 }

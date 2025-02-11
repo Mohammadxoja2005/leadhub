@@ -1,4 +1,3 @@
-import { Contact } from "app/domain";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ContactRepository } from "./contact";
 import { InjectModel } from "@nestjs/mongoose";
@@ -9,7 +8,11 @@ import {
     ContactDocument,
     ContactHydratedDocument,
 } from "app/infrastructure/repositories/contact/document";
-import { ContactCreate, ContactUpdate } from "app/application/api/controllers/contact/types";
+import {
+    ContactCreate,
+    ContactUpdate,
+    ContactBase,
+} from "app/application/api/controllers/contact/types";
 import { ObjectId } from "mongodb";
 import * as dayjs from "dayjs";
 
@@ -23,7 +26,7 @@ export class ContactRepositoryImpl implements ContactRepository {
     public async getAllByProjectId(params: {
         projectId: string;
         meta: { page: string };
-    }): Promise<Contact[]> {
+    }): Promise<ContactBase[]> {
         const { projectId, meta } = params;
         const { skip, limit } = this.calculatePagination(meta);
 
@@ -45,7 +48,7 @@ export class ContactRepositoryImpl implements ContactRepository {
         userId: string;
         projectId: string;
         meta: { page: string };
-    }): Promise<Contact[]> {
+    }): Promise<ContactBase[]> {
         const { userId, projectId, meta } = params;
         const { skip, limit } = this.calculatePagination(meta);
 
@@ -66,7 +69,7 @@ export class ContactRepositoryImpl implements ContactRepository {
         return contacts.map((contact: ContactDocument) => this.documentToEntity(contact));
     }
 
-    public async get(id: string): Promise<Contact[]> {
+    public async get(id: string): Promise<ContactBase[]> {
         const contacts = await this.model
             .find<ContactDocument>({
                 _id: new ObjectId(id),
@@ -118,15 +121,13 @@ export class ContactRepositoryImpl implements ContactRepository {
         return { skip, limit: LIMIT };
     }
 
-    private documentToEntity(document: ContactDocument): Contact {
+    private documentToEntity(document: ContactDocument): ContactBase {
         return {
             id: document._id.toHexString(),
             name: document.name,
             organization: document.organization,
             email: document.email,
             phone: document.phone,
-            projectId: document.project_id.toHexString(),
-            userId: document.user_id.toHexString(),
             createdAt: dayjs(document.created_at).format("MMM D, YYYY"),
             updatedAt: dayjs(document.updated_at).format("MMM D, YYYY"),
         };
