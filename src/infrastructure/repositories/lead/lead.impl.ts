@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { LeadRepository } from "./lead";
 import { LeadCreateDocument, LeadHydratedDocument, LeadWithContactDocument } from "./document";
-import { ObjectId } from "mongodb";
 import {
     LeadCreate,
     LeadUpdate,
@@ -26,7 +25,7 @@ export class LeadRepositoryImpl implements LeadRepository {
         const { projectId } = params;
         const { page } = params.meta;
 
-        return this.getLeadsByFilter({ project_id: new ObjectId(projectId) }, page);
+        return this.getLeadsByFilter({ project_id: new Types.ObjectId(projectId) }, page);
     }
 
     public async getAllByUserIdAndProjectId(params: {
@@ -39,15 +38,15 @@ export class LeadRepositoryImpl implements LeadRepository {
 
         return this.getLeadsByFilter(
             {
-                project_id: new ObjectId(projectId),
-                user_id: new ObjectId(userId),
+                project_id: new Types.ObjectId(projectId),
+                user_id: new Types.ObjectId(userId),
             },
             page,
         );
     }
 
     public async getById(id: string): Promise<LeadWithContact[]> {
-        return this.getLeadsByFilter({ _id: new ObjectId(id) });
+        return this.getLeadsByFilter({ _id: new Types.ObjectId(id) });
     }
 
     public async create(lead: LeadCreate): Promise<void> {
@@ -55,9 +54,9 @@ export class LeadRepositoryImpl implements LeadRepository {
             title: lead.title,
             value: lead.value,
             close_date: lead.closeDate ? new Date(lead.closeDate) : null,
-            project_id: new ObjectId(lead.projectId),
-            user_id: new ObjectId(lead.userId),
-            contact_id: new ObjectId(lead.contactId),
+            project_id: new Types.ObjectId(lead.projectId),
+            user_id: new Types.ObjectId(lead.userId),
+            contact_id: new Types.ObjectId(lead.contactId),
             created_at: new Date(),
             updated_at: new Date(),
         });
@@ -66,7 +65,7 @@ export class LeadRepositoryImpl implements LeadRepository {
     public async update(lead: LeadUpdate): Promise<void> {
         await this.model.updateOne(
             {
-                _id: new ObjectId(lead.id),
+                _id: new Types.ObjectId(lead.id),
                 updated_at: new Date(),
             },
             lead,
@@ -74,7 +73,7 @@ export class LeadRepositoryImpl implements LeadRepository {
     }
 
     public async delete(id: string): Promise<void> {
-        await this.model.deleteOne({ _id: new ObjectId(id) });
+        await this.model.deleteOne({ _id: new Types.ObjectId(id) });
     }
 
     private async getLeadsByFilter(

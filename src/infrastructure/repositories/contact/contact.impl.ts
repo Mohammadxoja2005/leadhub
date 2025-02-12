@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { ContactRepository } from "./contact";
 import { InjectModel } from "@nestjs/mongoose";
 import { Collections } from "app/infrastructure/schema";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import {
     ContactCreateDocument,
     ContactDocument,
@@ -13,7 +13,6 @@ import {
     ContactUpdate,
     ContactBase,
 } from "app/application/api/controllers/contact/types";
-import { ObjectId } from "mongodb";
 import * as dayjs from "dayjs";
 
 @Injectable()
@@ -31,7 +30,7 @@ export class ContactRepositoryImpl implements ContactRepository {
         const { skip, limit } = this.calculatePagination(meta);
 
         const contacts = await this.model
-            .find<ContactDocument>({ project_id: new ObjectId(projectId) })
+            .find<ContactDocument>({ project_id: new Types.ObjectId(projectId) })
             .skip(skip)
             .limit(limit)
             .lean()
@@ -54,8 +53,8 @@ export class ContactRepositoryImpl implements ContactRepository {
 
         const contacts = await this.model
             .find<ContactDocument>({
-                user_id: new ObjectId(userId),
-                project_id: new ObjectId(projectId),
+                user_id: new Types.ObjectId(userId),
+                project_id: new Types.ObjectId(projectId),
             })
             .skip(skip)
             .limit(limit)
@@ -72,7 +71,7 @@ export class ContactRepositoryImpl implements ContactRepository {
     public async get(id: string): Promise<ContactBase[]> {
         const contacts = await this.model
             .find<ContactDocument>({
-                _id: new ObjectId(id),
+                _id: new Types.ObjectId(id),
             })
             .lean()
             .exec();
@@ -90,8 +89,8 @@ export class ContactRepositoryImpl implements ContactRepository {
             organization: contact.organization,
             email: contact.email,
             phone: contact.phone,
-            project_id: new ObjectId(contact.projectId),
-            user_id: new ObjectId(contact.userId),
+            project_id: new Types.ObjectId(contact.projectId),
+            user_id: new Types.ObjectId(contact.userId),
             created_at: new Date(),
             updated_at: new Date(),
         });
@@ -100,7 +99,7 @@ export class ContactRepositoryImpl implements ContactRepository {
     public async update(contact: ContactUpdate): Promise<void> {
         await this.model.updateOne(
             {
-                _id: new ObjectId(contact.id),
+                _id: new Types.ObjectId(contact.id),
                 updated_at: new Date(),
             },
             contact,
@@ -108,7 +107,7 @@ export class ContactRepositoryImpl implements ContactRepository {
     }
 
     public async delete(id: string): Promise<void> {
-        await this.model.deleteOne({ _id: new ObjectId(id) });
+        await this.model.deleteOne({ _id: new Types.ObjectId(id) });
     }
 
     private calculatePagination(meta: { page: string }): { skip: number; limit: number } {

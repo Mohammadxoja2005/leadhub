@@ -14,7 +14,6 @@ import {
     DealWithContact,
 } from "app/application/api/controllers/deal/types";
 import * as dayjs from "dayjs";
-import { ObjectId } from "mongodb";
 
 @Injectable()
 export class DealRepositoryImpl implements DealRepository {
@@ -61,7 +60,7 @@ export class DealRepositoryImpl implements DealRepository {
     public async update(deal: DealUpdate): Promise<void> {
         await this.model.updateOne(
             {
-                _id: new ObjectId(deal.id),
+                _id: new Types.ObjectId(deal.id),
                 updated_at: new Date(),
             },
             deal,
@@ -69,7 +68,7 @@ export class DealRepositoryImpl implements DealRepository {
     }
 
     public async delete(id: string): Promise<void> {
-        await this.model.deleteOne({ _id: new ObjectId(id) });
+        await this.model.deleteOne({ _id: new Types.ObjectId(id) });
     }
 
     private async getDealsByFilter(

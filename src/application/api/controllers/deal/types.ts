@@ -1,4 +1,4 @@
-import { Contact, Deal, Lead } from "app/domain";
+import { Contact, Deal } from "app/domain";
 
 export type DealWithContact = Omit<Deal, "projectId" | "userId"> &
     Omit<Contact, "projectId" | "userId" | "createdAt" | "updatedAt">;
