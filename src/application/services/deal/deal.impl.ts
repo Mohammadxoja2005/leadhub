@@ -19,7 +19,7 @@ export class DealServiceImpl implements DealService {
     }
 
     public async findOneDeal(id: string): Promise<Deal> {
-        return await this.dealRepository.findOne(id);
+        return await this.dealRepository.get(id);
     }
 
     public async updateDeal(deal: Deal): Promise<Deal> {

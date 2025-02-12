@@ -125,10 +125,10 @@ export class LeadRepositoryImpl implements LeadRepository {
             throw new NotFoundException("Lead not found");
         }
 
-        return documents.map((document) => this.documentEntity(document));
+        return documents.map((document) => this.documentToEntity(document));
     }
 
-    private documentEntity(document: LeadWithContactDocument): LeadWithContact {
+    private documentToEntity(document: LeadWithContactDocument): LeadWithContact {
         return {
             id: document._id.toHexString(),
             title: document.title,

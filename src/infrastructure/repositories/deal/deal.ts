@@ -1,13 +1,18 @@
 import { type Deal } from "app/domain";
+import { DealWithContact } from "app/application/api/controllers/deal/types";
 
 export interface DealRepository {
-    create: (deal: Deal) => Promise<Deal>;
+    create: (deal: Deal) => Promise<void>;
 
-    update: (deal: Deal) => Promise<Deal>;
+    update: (deal: Deal) => Promise<void>;
 
-    delete: (id: string) => Promise<Deal[]>;
+    delete: (id: string) => Promise<void>;
 
-    getAllByUserIdAndProjectId: () => Promise<Deal[]>;
+    getAllByUserIdAndProjectId: (params: {
+        projectId: string;
+        userId: string;
+        meta: { page: string };
+    }) => Promise<DealWithContact[]>;
 
-    findOne: (id: string) => Promise<Deal>;
+    get: (id: string) => Promise<DealWithContact[]>;
 }
