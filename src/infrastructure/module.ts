@@ -3,13 +3,14 @@ import { Infrastructure } from "app/common";
 import {
     ContactRepositoryImpl,
     DealRepositoryImpl,
+    DealSchema,
     LeadRepositoryImpl,
     UserRepositoryImpl,
+    LeadSchema,
+    ContactSchema,
 } from "./repositories";
 import { MongooseModule } from "@nestjs/mongoose";
-import { LeadSchema } from "./repositories";
 import { Collections } from "./schema";
-import { ContactSchema } from "app/infrastructure/repositories/contact/schema";
 
 @Module({
     imports: [
@@ -21,6 +22,10 @@ import { ContactSchema } from "app/infrastructure/repositories/contact/schema";
             {
                 name: Collections.Contact,
                 schema: ContactSchema,
+            },
+            {
+                name: Collections.Deal,
+                schema: DealSchema,
             },
         ]),
     ],

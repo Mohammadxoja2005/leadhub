@@ -1,29 +1,19 @@
-import { Deal, DealStatus } from "app/domain";
+import { Deal } from "app/domain";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { type DealRepository } from "./deal";
+import { InjectModel } from "@nestjs/mongoose";
+import { Collections } from "app/infrastructure/schema";
+import { Model } from "mongoose";
+import { DealHydratedDocument } from "app/infrastructure/repositories/deal/document";
 
 @Injectable()
 export class DealRepositoryImpl implements DealRepository {
-    dealRepositoryDB: Deal[];
+    constructor(
+        @InjectModel(Collections.Deal)
+        private readonly model: Model<DealHydratedDocument>,
+    ) {}
 
-    constructor() {
-        this.dealRepositoryDB = [
-            {
-                _id: "5349b4ddd2781d08c09890f4",
-                name: "John Doe",
-                phone: "+998905879038",
-                email: "johndoe@gmail.com",
-                company: "google",
-                value: 100.0,
-                closeDate: new Date(),
-                status: DealStatus.Qualified,
-                projectId: "134",
-                userId: "5349b4ddd2781d08c09890f4",
-            },
-        ];
-    }
-
-    public async findAll(): Promise<Deal[]> {
+    public async getAllByUserIdAndProjectId(): Promise<Deal[]> {
         return this.dealRepositoryDB;
     }
 

@@ -1,4 +1,4 @@
-import { type Deal } from "../../../domain";
+import { type Deal } from "app/domain";
 
 export interface DealRepository {
     create: (deal: Deal) => Promise<Deal>;
@@ -7,7 +7,7 @@ export interface DealRepository {
 
     delete: (id: string) => Promise<Deal[]>;
 
-    findAll: () => Promise<Deal[]>;
+    getAllByUserIdAndProjectId: () => Promise<Deal[]>;
 
     findOne: (id: string) => Promise<Deal>;
 }

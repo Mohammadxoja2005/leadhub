@@ -15,7 +15,7 @@ export class DealServiceImpl implements DealService {
     }
 
     public async findAllDeals(): Promise<Deal[]> {
-        return await this.dealRepository.findAll();
+        return await this.dealRepository.getAllByUserIdAndProjectId();
     }
 
     public async findOneDeal(id: string): Promise<Deal> {
