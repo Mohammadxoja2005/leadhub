@@ -1,14 +1,14 @@
 import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from "@nestjs/common";
-import { Contact } from "app/domain";
-import { Input } from "./create";
+import { Input as CreateInput } from "./create";
+import { Input as UpdateInput } from "./update";
 import { AuthGuard } from "app/application/api/guard";
 import { decode, JwtPayload } from "jsonwebtoken";
 import { Request, Response } from "express";
 import {
     CreateContactUseCase,
     DeleteContactUseCase,
-    FindAllContactsUseCase,
-    FindContactUseCase,
+    GetAllContactsUseCase,
+    GetContactUseCase,
     UpdateContactUseCase,
 } from "app/application/usecases";
 
@@ -17,22 +17,22 @@ import {
 export class ContactController {
     constructor(
         private readonly createContactUseCase: CreateContactUseCase,
-        private readonly findAllContactsUseCase: FindAllContactsUseCase,
-        private readonly findContactUseCase: FindContactUseCase,
+        private readonly getAllContactsUseCase: GetAllContactsUseCase,
+        private readonly getContactUseCase: GetContactUseCase,
         private readonly updateContactUseCase: UpdateContactUseCase,
         private readonly deleteContactUseCase: DeleteContactUseCase,
     ) {}
 
     @Post("/create")
     async create(
-        @Body() body: Input,
+        @Body() body: CreateInput,
         @Req() request: Request,
         @Res() response: Response,
     ): Promise<void> {
         try {
             const { user_id, project_id } = decode(request.header("Token") as string) as JwtPayload;
 
-            const contactWithMetadata: Contact = {
+            const contactWithMetadata = {
                 userId: user_id,
                 projectId: project_id,
                 ...body,
@@ -49,42 +49,46 @@ export class ContactController {
     }
 
     @Get()
-    async findAll(@Req() request: Request, @Res() response: Response): Promise<void> {
+    async getAll(@Req() request: Request, @Res() response: Response): Promise<void> {
         try {
             const { user_id: userId, project_id: projectId } = decode(
                 request.header("Token") as string,
             ) as JwtPayload;
+            const page = request.query.page as string;
 
-            const contacts = await this.findAllContactsUseCase.execute(userId, projectId);
+            const contacts = await this.getAllContactsUseCase.execute({
+                userId,
+                projectId,
+                meta: { page },
+            });
 
             response.status(HttpStatus.OK).json(contacts);
         } catch (error) {
-            console.error("Error in FindAllContactsUseCase", error);
+            console.error("Error in GetAllContactsUseCase", error);
 
             throw error;
         }
     }
 
     @Get("/:id")
-    async findOne(@Req() request: Request, @Res() response: Response): Promise<void> {
+    async get(@Req() request: Request, @Res() response: Response): Promise<void> {
         try {
-            const { contact_id: contactId } = request.params;
+            const { id: contactId } = request.params;
 
-            const contact = await this.findContactUseCase.execute(contactId);
+            const contact = await this.getContactUseCase.execute(contactId);
 
             response.status(HttpStatus.OK).json(contact);
         } catch (error) {
-            console.error("Error in findContactUseCase", error);
+            console.error("Error in GetContactUseCase", error);
 
             throw error;
         }
     }
 
     @Post("update/:id")
-    async update(@Req() request: Request, @Res() response: Response): Promise<void> {
+    async update(@Body() body: UpdateInput, @Res() response: Response): Promise<void> {
+        // TODO need to add check if it is userId and projectId of user belonga to the contact then update it. Should add in db,
         try {
-            const body = request.body;
-
             await this.updateContactUseCase.execute(body);
 
             response.status(HttpStatus.OK);
@@ -97,6 +101,7 @@ export class ContactController {
 
     @Post("delete/:id")
     async delete(@Req() request: Request, @Res() response: Response): Promise<void> {
+        // TODO need to add check if it is userId and projectId of user belonga to the contact then delete it. Should add in db
         try {
             const { contact_id: contactId } = request.params;
 

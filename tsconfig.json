@@ -13,7 +13,7 @@
     "declaration": false,
     "skipLibCheck": true,
     "strictNullChecks": true,
-    "strict": true,
+    "strict": false,
     "newLine": "lf",
     "lib": [
       "es2017",

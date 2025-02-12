@@ -34,7 +34,7 @@ export class LeadController {
             const leads = await this.getAllLeadsUseCase.execute({
                 userId,
                 projectId,
-                meta: { page: page },
+                meta: { page },
             });
 
             response.status(HttpStatus.OK).json(leads);
@@ -87,6 +87,7 @@ export class LeadController {
 
     @Post("update/:id")
     async update(@Body() body: UpdateInput, @Res() response: Response): Promise<void> {
+        // TODO need to add check if it is userId and projectId of user belongs to the lead then update it. Should add in db,
         try {
             await this.updateLeadUseCase.execute(body);
 
@@ -100,6 +101,8 @@ export class LeadController {
 
     @Post("delete/:id")
     async delete(@Req() request: Request, @Res() response: Response): Promise<void> {
+        // TODO need to add check if it is userId and projectId of user belonga to the contact then delete it. Should add in db
+
         try {
             const { id } = request.params;
 

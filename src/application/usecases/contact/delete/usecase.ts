@@ -9,7 +9,7 @@ export class DeleteContactUseCase {
         private contactService: ContactService,
     ) {}
 
-    public async execute(contactId: string): Promise<void> {
-        await this.contactService.delete(contactId);
+    public async execute(id: string): Promise<void> {
+        await this.contactService.delete(id);
     }
 }

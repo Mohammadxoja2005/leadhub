@@ -1,5 +1,8 @@
-import { type Contact } from "app/domain";
-import { ContactCreate, ContactUpdate } from "app/application/api/controllers/contact/types";
+import {
+    ContactBase,
+    ContactCreate,
+    ContactUpdate,
+} from "app/application/api/controllers/contact/types";
 
 export interface ContactService {
     create: (contact: ContactCreate) => Promise<void>;
@@ -12,7 +15,7 @@ export interface ContactService {
         userId: string;
         projectId: string;
         meta: { page: string };
-    }) => Promise<Contact[]>;
+    }) => Promise<ContactBase[]>;
 
-    get: (id: string) => Promise<Contact[]>;
+    get: (id: string) => Promise<ContactBase[]>;
 }

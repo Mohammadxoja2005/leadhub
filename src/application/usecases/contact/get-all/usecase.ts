@@ -1,9 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Application } from "app/common";
 import { ContactService } from "app/application/services";
+import { ContactBase } from "app/application/api/controllers/contact/types";
 
 @Injectable()
-export class FindAllContactsUseCase {
+export class GetAllContactsUseCase {
     constructor(
         @Inject(Application.Service.Contact)
         private contactService: ContactService,
@@ -13,7 +14,7 @@ export class FindAllContactsUseCase {
         userId: string;
         projectId: string;
         meta: { page: string };
-    }): Promise<void> {
-        await this.contactService.getAll(params);
+    }): Promise<ContactBase[]> {
+        return this.contactService.getAll(params);
     }
 }

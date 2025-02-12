@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Application } from "app/common";
 import { ContactService } from "app/application/services";
-import { Contact } from "app/domain";
+import { ContactUpdate } from "app/application/api/controllers/contact/types";
 
 @Injectable()
 export class UpdateContactUseCase {
@@ -10,7 +10,7 @@ export class UpdateContactUseCase {
         private contactService: ContactService,
     ) {}
 
-    public async execute(contact: Contact): Promise<void> {
+    public async execute(contact: ContactUpdate): Promise<void> {
         await this.contactService.update(contact);
     }
 }

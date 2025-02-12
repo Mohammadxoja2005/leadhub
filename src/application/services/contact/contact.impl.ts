@@ -1,22 +1,27 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { Contact } from "app/domain";
 import { Infrastructure } from "app/common";
 import { ContactRepository, UserRepository } from "app/infrastructure/repositories";
 import { ContactService } from "./contact";
+import {
+    ContactBase,
+    ContactCreate,
+    ContactUpdate,
+} from "app/application/api/controllers/contact/types";
 
 @Injectable()
 export class ContactServiceImpl implements ContactService {
     constructor(
         @Inject(Infrastructure.Repository.Contact)
         private readonly contactRepository: ContactRepository,
-        @Inject(Infrastructure.Repository.User) private readonly userRepository: UserRepository,
+        @Inject(Infrastructure.Repository.User)
+        private readonly userRepository: UserRepository,
     ) {}
 
-    public async create(contact: Contact): Promise<void> {
+    public async create(contact: ContactCreate): Promise<void> {
         await this.contactRepository.create(contact);
     }
 
-    public async update(contact: Contact): Promise<void> {
+    public async update(contact: ContactUpdate): Promise<void> {
         await this.contactRepository.update(contact);
     }
 
@@ -28,7 +33,7 @@ export class ContactServiceImpl implements ContactService {
         userId: string;
         projectId: string;
         meta: { page: string };
-    }): Promise<Contact[]> {
+    }): Promise<ContactBase[]> {
         const { userId, projectId, meta } = params;
         const user = await this.userRepository.findById(userId);
 
@@ -37,7 +42,7 @@ export class ContactServiceImpl implements ContactService {
             : this.contactRepository.getAllByUserIdAndProjectId({ userId, projectId, meta });
     }
 
-    public async get(id: string): Promise<Contact[]> {
+    public async get(id: string): Promise<ContactBase[]> {
         return this.contactRepository.get(id);
     }
 }

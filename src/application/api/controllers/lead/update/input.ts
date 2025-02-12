@@ -1,7 +1,6 @@
-import { LeadUpdate } from "app/application/api/controllers/lead/types";
 import { IsNumber, IsOptional, IsString } from "class-validator";
 
-export class Input implements LeadUpdate {
+export class Input {
     @IsString()
     public id: string;
     @IsString()

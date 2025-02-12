@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ContactService } from "app/application/services";
 import { Application } from "app/common";
-import { Contact } from "app/domain";
+import { ContactCreate } from "app/application/api/controllers/contact/types";
 
 @Injectable()
 export class CreateContactUseCase {
@@ -10,7 +10,7 @@ export class CreateContactUseCase {
         private contactService: ContactService,
     ) {}
 
-    public async execute(contact: Contact): Promise<void> {
+    public async execute(contact: ContactCreate): Promise<void> {
         await this.contactService.create(contact);
     }
 }
