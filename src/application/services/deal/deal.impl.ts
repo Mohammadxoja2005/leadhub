@@ -1,8 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { DealRepository } from "app/infrastructure/repositories";
-import { type Deal } from "app/domain";
 import { Infrastructure } from "app/common";
 import { DealService } from "./deal";
+import {
+    DealCreate,
+    DealUpdate,
+    DealWithContact,
+} from "app/application/api/controllers/deal/types";
 
 @Injectable()
 export class DealServiceImpl implements DealService {
@@ -10,23 +14,27 @@ export class DealServiceImpl implements DealService {
         @Inject(Infrastructure.Repository.Deal) private readonly dealRepository: DealRepository,
     ) {}
 
-    public async createDeal(deal: Deal): Promise<Deal> {
-        return await this.dealRepository.create(deal);
+    public async create(deal: DealCreate): Promise<void> {
+        await this.dealRepository.create(deal);
     }
 
-    public async findAllDeals(): Promise<Deal[]> {
-        return await this.dealRepository.getAllByUserIdAndProjectId();
+    public async getAll(params: {
+        projectId: string;
+        userId: string;
+        meta: { page: string };
+    }): Promise<DealWithContact[]> {
+        return this.dealRepository.getAllByUserIdAndProjectId(params);
     }
 
-    public async findOneDeal(id: string): Promise<Deal> {
-        return await this.dealRepository.get(id);
+    public async get(id: string): Promise<DealWithContact[]> {
+        return this.dealRepository.get(id);
     }
 
-    public async updateDeal(deal: Deal): Promise<Deal> {
-        return await this.dealRepository.update(deal);
+    public async update(deal: DealUpdate): Promise<void> {
+        await this.dealRepository.update(deal);
     }
 
-    public async deleteDeal(id: string): Promise<Deal[]> {
-        return await this.dealRepository.delete(id);
+    public async delete(id: string): Promise<void> {
+        await this.dealRepository.delete(id);
     }
 }

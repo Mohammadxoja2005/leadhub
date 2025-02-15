@@ -1,13 +1,21 @@
-import { type Deal } from "../../../domain";
+import {
+    DealCreate,
+    DealUpdate,
+    DealWithContact,
+} from "app/application/api/controllers/deal/types";
 
 export interface DealService {
-    createDeal: (deal: Deal) => Promise<Deal>;
+    create: (deal: DealCreate) => Promise<void>;
 
-    updateDeal: (deal: Deal) => Promise<Deal>;
+    update: (deal: DealUpdate) => Promise<void>;
 
-    deleteDeal: (id: string) => Promise<Deal[]>;
+    delete: (id: string) => Promise<void>;
 
-    findAllDeals: () => Promise<Deal[]>;
+    getAll: (params: {
+        projectId: string;
+        userId: string;
+        meta: { page: string };
+    }) => Promise<DealWithContact[]>;
 
-    findOneDeal: (id: string) => Promise<Deal>;
+    get: (id: string) => Promise<DealWithContact[]>;
 }

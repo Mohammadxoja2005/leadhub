@@ -1,10 +1,13 @@
-import { type Deal } from "app/domain";
-import { DealWithContact } from "app/application/api/controllers/deal/types";
+import {
+    DealCreate,
+    DealUpdate,
+    DealWithContact,
+} from "app/application/api/controllers/deal/types";
 
 export interface DealRepository {
-    create: (deal: Deal) => Promise<void>;
+    create: (deal: DealCreate) => Promise<void>;
 
-    update: (deal: Deal) => Promise<void>;
+    update: (deal: DealUpdate) => Promise<void>;
 
     delete: (id: string) => Promise<void>;
 

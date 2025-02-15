@@ -8,6 +8,6 @@ export class CreateDealUseCase {
     constructor(@Inject(Application.Service.Deal) private readonly dealService: DealService) {}
 
     public async execute(deal: Deal): Promise<void> {
-        await this.dealService.createDeal(deal);
+        await this.dealService.create(deal);
     }
 }
