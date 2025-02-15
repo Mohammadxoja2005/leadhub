@@ -6,7 +6,7 @@ import { DealService } from "app/application/services";
 export class DeleteDealUseCase {
     constructor(@Inject(Application.Service.Deal) private readonly dealService: DealService) {}
 
-    public async execute(dealId: string): Promise<void> {
-        await this.dealService.delete(dealId);
+    public async execute(id: string): Promise<void> {
+        await this.dealService.delete(id);
     }
 }

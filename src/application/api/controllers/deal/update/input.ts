@@ -1,8 +1,11 @@
-import { IsNumber, IsString, IsOptional } from "class-validator";
+import { IsNumber, IsOptional, IsString } from "class-validator";
 import { DealStatus } from "app/domain";
 
 export class Input {
     @IsString()
+    public id: string;
+    @IsString()
+    @IsOptional()
     public title: string;
     @IsNumber()
     @IsOptional()
@@ -10,8 +13,7 @@ export class Input {
     @IsString()
     @IsOptional()
     public closeDate: string | null;
-    @IsString()
-    public contactId: string;
     @IsNumber()
+    @IsOptional()
     public status: DealStatus;
 }

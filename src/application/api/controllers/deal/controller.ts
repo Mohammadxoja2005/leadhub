@@ -1,13 +1,13 @@
 import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { Request, Response } from "express";
-import { Deal } from "app/domain";
 import { decode, JwtPayload } from "jsonwebtoken";
-import { Input } from "./create";
+import { Input as CreateInput } from "./create";
+import { Input as UpdateInput } from "./update";
 import {
     CreateDealUseCase,
     DeleteDealUseCase,
-    FindAllDealsUseCase,
-    FindDealUseCase,
+    GetAllDealsUseCase,
+    GetDealUseCase,
     UpdateDealUseCase,
 } from "app/application/usecases";
 import { AuthGuard } from "app/application/api/guard";
@@ -17,18 +17,18 @@ import { AuthGuard } from "app/application/api/guard";
 export class DealController {
     constructor(
         private readonly createDealUseCase: CreateDealUseCase,
-        private readonly findAllDealsUseCase: FindAllDealsUseCase,
-        private readonly findDealUseCase: FindDealUseCase,
+        private readonly getAllDealsUseCase: GetAllDealsUseCase,
+        private readonly getDealUseCase: GetDealUseCase,
         private readonly updateDealUseCase: UpdateDealUseCase,
         private readonly deleteDealUseCase: DeleteDealUseCase,
     ) {}
 
     @Post("/create")
-    async create(@Body() body: Input, @Req() request: Request, @Res() response: Response) {
+    async create(@Body() body: CreateInput, @Req() request: Request, @Res() response: Response) {
         try {
             const { user_id, project_id } = decode(request.header("Token") as string) as JwtPayload;
 
-            const dealWithMetadata: Deal = {
+            const dealWithMetadata = {
                 userId: user_id,
                 projectId: project_id,
                 ...body,
@@ -45,42 +45,46 @@ export class DealController {
     }
 
     @Get()
-    async findAll(@Req() request: Request, @Res() response: Response): Promise<void> {
+    async getAll(@Req() request: Request, @Res() response: Response): Promise<void> {
         try {
             const { user_id: userId, project_id: projectId } = decode(
                 request.header("Token") as string,
             ) as JwtPayload;
+            const page = request.query.page as string;
 
-            const deals = await this.findAllDealsUseCase.execute();
+            const deals = await this.getAllDealsUseCase.execute({
+                userId,
+                projectId,
+                meta: { page },
+            });
 
             response.status(HttpStatus.OK).json(deals);
         } catch (error) {
-            console.error("Error FindAllDealsUseCase", error);
+            console.error("Error GetAllDealsUseCase", error);
 
             throw error;
         }
     }
 
     @Get("/:id")
-    async findOne(@Req() request: Request, @Res() response: Response): Promise<void> {
+    async get(@Req() request: Request, @Res() response: Response): Promise<void> {
         try {
             const { id } = request.params;
 
-            const lead = await this.findDealUseCase.execute(id);
+            const deal = await this.getDealUseCase.execute(id);
 
-            response.status(HttpStatus.OK).json(lead);
+            response.status(HttpStatus.OK).json(deal);
         } catch (error) {
-            console.error("Error FindDealUseCase", error);
+            console.error("Error GetDealUseCase", error);
 
             throw error;
         }
     }
 
     @Post("update/id")
-    async update(@Req() request: Request, @Res() response: Response) {
+    async update(@Body() body: UpdateInput, @Res() response: Response) {
+        // TODO need to add check if it is userId and projectId of user belongs to the deal then update it. Should add in db,
         try {
-            const body = request.body;
-
             await this.updateDealUseCase.execute(body);
 
             response.status(HttpStatus.OK);
@@ -93,6 +97,7 @@ export class DealController {
 
     @Post("delete/:id")
     async delete(@Req() request: Request, @Res() response: Response): Promise<void> {
+        // TODO need to add check if it is userId and projectId of user belongs to the deal then delete it. Should add in db
         try {
             const { id } = request.params;
 
