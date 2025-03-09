@@ -24,7 +24,7 @@ export class UserController {
         }
     }
 
-    @Post("/register")
+    @Post("/login")
     async login(@Body() body: LoginInput, @Res() response: Response): Promise<void> {
         try {
             const { usernameOrEmail, password } = body;

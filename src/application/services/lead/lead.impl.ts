@@ -25,7 +25,7 @@ export class LeadServiceImpl implements LeadService {
         meta: { page: string };
     }): Promise<LeadWithContact[]> {
         const { projectId, userId, meta } = params;
-        const user = await this.userRepository.findById(userId);
+        const user = await this.userRepository.getById(userId);
 
         return user.role === "admin"
             ? this.leadRepository.getAllByProjectId({ projectId, meta })

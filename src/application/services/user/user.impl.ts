@@ -51,11 +51,7 @@ export class UserServiceImpl implements UserService {
         return false;
     }
 
-    public async updateUser(user: User): Promise<User> {
-        return await this.userRepository.update(user);
-    }
-
-    public async deleteUser(id: string): Promise<User[]> {
-        return await this.userRepository.delete(id);
+    public async deleteUser(id: string): Promise<void> {
+        await this.userRepository.delete(id);
     }
 }

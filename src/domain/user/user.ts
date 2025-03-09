@@ -1,5 +1,6 @@
 export type User = {
-    username: string;
+    id: string;
+    username: string | null;
     password: string;
     name: string;
     email: string;
@@ -9,4 +10,6 @@ export type User = {
     oAuth: {
         googleId: string;
     };
+    createdAt: string;
+    updatedAt: string;
 };

@@ -35,7 +35,7 @@ export class ContactServiceImpl implements ContactService {
         meta: { page: string };
     }): Promise<ContactBase[]> {
         const { userId, projectId, meta } = params;
-        const user = await this.userRepository.findById(userId);
+        const user = await this.userRepository.getById(userId);
 
         return user.role === "admin"
             ? this.contactRepository.getAllByProjectId({ projectId, meta })

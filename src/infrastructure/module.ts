@@ -8,6 +8,7 @@ import {
     UserRepositoryImpl,
     LeadSchema,
     ContactSchema,
+    UserSchema,
 } from "./repositories";
 import { MongooseModule } from "@nestjs/mongoose";
 import { Collections } from "./schema";
@@ -26,6 +27,10 @@ import { Collections } from "./schema";
             {
                 name: Collections.Deal,
                 schema: DealSchema,
+            },
+            {
+                name: Collections.User,
+                schema: UserSchema,
             },
         ]),
     ],

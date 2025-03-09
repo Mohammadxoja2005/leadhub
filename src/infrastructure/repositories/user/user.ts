@@ -1,15 +1,11 @@
-import { type User } from "app/domain";
+import { User } from "app/domain";
 
 export interface UserRepository {
-    create: (user: User) => Promise<User>;
+    create: (user: User) => Promise<void>;
 
-    update: (user: User) => Promise<User>;
+    delete: (id: string) => Promise<void>;
 
-    delete: (id: string) => Promise<User[]>;
+    getAll: () => Promise<User[]>;
 
-    findAll: () => Promise<User[]>;
-
-    findById: (id: string) => Promise<User>;
-
-    findByUsernameOrEmail: (usernameOrEmail: string) => Promise<User>;
+    getById: (id: string) => Promise<User[]>;
 }
