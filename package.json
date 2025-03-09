@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node build/main.js",
     "dev": "nodemon build/main.js",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "lint": "eslint \"src/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\""
   },
@@ -48,6 +48,7 @@
     "jest": "29.7.0",
     "nodemon": "3.0.3",
     "prettier": "^3.2.5",
+    "tsc-alias": "^1.8.11",
     "typescript": "^5.3.3"
   }
 }

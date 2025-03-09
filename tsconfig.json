@@ -9,7 +9,8 @@
     "emitDecoratorMetadata": true,
     "noEmitHelpers": false,
     "importHelpers": true,
-    "outDir": "build",
+    "outDir": "./build",
+    "baseUrl": "./",
     "declaration": false,
     "skipLibCheck": true,
     "strictNullChecks": true,
@@ -28,10 +29,7 @@
       ]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    ".eslintrc.js"
-  ],
+  "resolveJsonModule": true,
   "exclude": [
     "node_modules"
   ]
