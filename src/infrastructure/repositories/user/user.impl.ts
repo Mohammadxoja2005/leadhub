@@ -24,14 +24,14 @@ export class UserRepositoryImpl implements UserRepository {
         return documents.map((document) => this.documentToEntity(document));
     }
 
-    public async getById(id: string): Promise<User[]> {
-        const documents = await this.model.find<UserDocument>({ _id: new Types.ObjectId(id) });
+    public async getById(id: string): Promise<User> {
+        const document = await this.model.findOne<UserDocument>({ _id: new Types.ObjectId(id) });
 
-        if (!documents) {
+        if (!document) {
             throw new NotFoundException("User not found");
         }
 
-        return documents.map((document) => this.documentToEntity(document));
+        return this.documentToEntity(document);
     }
 
     public async create(user: User): Promise<void> {

@@ -7,5 +7,5 @@ export interface UserRepository {
 
     getAll: () => Promise<User[]>;
 
-    getById: (id: string) => Promise<User[]>;
+    getById: (id: string) => Promise<User>;
 }
