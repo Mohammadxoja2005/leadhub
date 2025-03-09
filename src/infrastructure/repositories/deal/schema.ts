@@ -8,7 +8,7 @@ export const DealSchema = new Schema<DealHydratedDocument>(
         title: String,
         value: { type: Number, default: null },
         close_date: { type: Date, default: null },
-        project_id: Types.ObjectId,
+        project_id: String,
         user_id: Types.ObjectId,
         contact_id: Types.ObjectId,
         status: DealStatus,

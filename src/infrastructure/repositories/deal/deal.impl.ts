@@ -48,7 +48,7 @@ export class DealRepositoryImpl implements DealRepository {
             title: deal.title,
             value: deal.value,
             close_date: deal.closeDate ? new Date(deal.closeDate) : null,
-            project_id: new Types.ObjectId(deal.projectId),
+            project_id: deal.projectId,
             user_id: new Types.ObjectId(deal.userId),
             contact_id: new Types.ObjectId(deal.contactId),
             status: deal.status,

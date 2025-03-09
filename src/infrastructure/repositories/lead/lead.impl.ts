@@ -54,7 +54,7 @@ export class LeadRepositoryImpl implements LeadRepository {
             title: lead.title,
             value: lead.value,
             close_date: lead.closeDate ? new Date(lead.closeDate) : null,
-            project_id: new Types.ObjectId(lead.projectId),
+            project_id: lead.projectId,
             user_id: new Types.ObjectId(lead.userId),
             contact_id: new Types.ObjectId(lead.contactId),
             created_at: new Date(),

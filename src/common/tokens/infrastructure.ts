@@ -5,4 +5,7 @@ export const Infrastructure = {
         Lead: Symbol.for("LeadRepository"),
         User: Symbol.for("UserRepository"),
     },
+    Auth: {
+        Google: Symbol.for("AuthGoogleStrategy"),
+    },
 };

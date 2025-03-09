@@ -8,7 +8,7 @@ export const ContactSchema = new Schema<ContactHydratedDocument>(
         organization: { type: String, default: null },
         email: { type: String, default: null },
         phone: { type: String, default: null },
-        project_id: Types.ObjectId,
+        project_id: String,
         user_id: Types.ObjectId,
         created_at: Date,
         updated_at: Date,

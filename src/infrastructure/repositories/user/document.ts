@@ -3,12 +3,12 @@ import { HydratedDocument, Types } from "mongoose";
 export type UserDocument = {
     _id: Types.ObjectId;
     username: string | null;
-    password: string;
-    name: string;
-    email: string;
+    password: string | null;
+    name: string | null;
+    email: string | null;
     is_active: boolean;
     role: "admin" | "regular";
-    project_id: Types.ObjectId;
+    project_id: string;
     o_auth: {
         google_id: string;
     };

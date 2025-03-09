@@ -5,7 +5,7 @@ export type LeadDocument = {
     title: string;
     value: number | null;
     close_date: Date | null;
-    project_id: Types.ObjectId;
+    project_id: string;
     user_id: Types.ObjectId;
     contact_id: Types.ObjectId;
     created_at: Date;

@@ -1,14 +1,15 @@
-import { User } from "../../../domain";
+import { User } from "app/domain";
 
 export interface UserService {
-    createUser: (user: any) => Promise<User>;
+    create: (user: User) => Promise<void>;
 
-    deleteUser: (id: string) => Promise<any[]>;
+    delete: (id: string) => Promise<void>;
 
-    loginUser: (
-        usernameOrEmail: string,
-        password: string,
-    ) => Promise<{ user: User; token: string } | false>;
+    getById: (id: string) => Promise<User>;
 
-    updateUser: (user: any) => Promise<any>;
+    authenticate: (user: {
+        name: string | null;
+        email: string | null;
+        googleId: string;
+    }) => Promise<{ user: User; token: string }>;
 }

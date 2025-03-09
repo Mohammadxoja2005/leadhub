@@ -10,6 +10,7 @@ import {
     UserHydratedDocument,
 } from "app/infrastructure/repositories/user/document";
 import * as dayjs from "dayjs";
+import { UserCreate } from "app/application/api/controllers/auth/types";
 
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {
@@ -24,6 +25,16 @@ export class UserRepositoryImpl implements UserRepository {
         return documents.map((document) => this.documentToEntity(document));
     }
 
+    public async getUserByGoogleId(id: string): Promise<User> {
+        const document = await this.model.findOne<UserDocument>({ "o_auth.google_id": id });
+
+        if (!document) {
+            throw new NotFoundException("User not found");
+        }
+
+        return this.documentToEntity(document);
+    }
+
     public async getById(id: string): Promise<User> {
         const document = await this.model.findOne<UserDocument>({ _id: new Types.ObjectId(id) });
 
@@ -34,7 +45,15 @@ export class UserRepositoryImpl implements UserRepository {
         return this.documentToEntity(document);
     }
 
-    public async create(user: User): Promise<void> {
+    public async create(user: UserCreate): Promise<void> {
+        const isUserExists = await this.model.findOne<UserDocument>({
+            "o_auth.google_id": user.oAuth.googleId,
+        });
+
+        if (isUserExists) {
+            return;
+        }
+
         await this.model.create<UserCreateDocument>({
             username: user.username,
             password: user.password,
@@ -45,7 +64,7 @@ export class UserRepositoryImpl implements UserRepository {
             o_auth: {
                 google_id: user.oAuth.googleId,
             },
-            project_id: new Types.ObjectId(user.projectId),
+            project_id: user.projectId,
             updated_at: new Date(),
             created_at: new Date(),
         });
@@ -67,7 +86,7 @@ export class UserRepositoryImpl implements UserRepository {
             oAuth: {
                 googleId: document.o_auth.google_id,
             },
-            projectId: document.project_id.toHexString(),
+            projectId: document.project_id,
             updatedAt: dayjs(document.updated_at).format("MMM D, YYYY"),
             createdAt: dayjs(document.created_at).format("MMM D, YYYY"),
         };

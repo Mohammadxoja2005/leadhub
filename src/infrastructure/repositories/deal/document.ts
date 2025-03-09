@@ -4,7 +4,7 @@ import { HydratedDocument, Types } from "mongoose";
 export type DealDocument = {
     _id: Types.ObjectId;
     title: string;
-    project_id: Types.ObjectId;
+    project_id: string;
     user_id: Types.ObjectId;
     value: number | null;
     close_date: Date | null;

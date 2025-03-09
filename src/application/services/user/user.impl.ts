@@ -2,10 +2,8 @@ import { Inject, Injectable } from "@nestjs/common";
 import { UserRepository } from "app/infrastructure/repositories";
 import { UserService } from "./user";
 import { Infrastructure } from "app/common";
-import { type User } from "app/domain";
-import * as bcrypt from "bcrypt";
+import { User } from "app/domain";
 import { sign } from "jsonwebtoken";
-import * as crypto from "node:crypto";
 
 @Injectable()
 export class UserServiceImpl implements UserService {
@@ -14,44 +12,43 @@ export class UserServiceImpl implements UserService {
         private readonly userRepository: UserRepository,
     ) {}
 
-    public async createUser(userRegister: User): Promise<User> {
-        userRegister["projectId"] = crypto.randomUUID();
-
-        // TODO это _id только на время, после того как подключем настояшию базу, уберем это поле польностью
-        userRegister["_id"] = crypto.randomUUID();
-
-        userRegister.password = await bcrypt.hash(userRegister.password, 10);
-
-        return await this.userRepository.create(userRegister as User);
+    public async getById(id: string): Promise<User> {
+        return this.userRepository.getById(id);
     }
 
-    public async loginUser(
-        usernameOrEmail: string,
-        password: string,
-    ): Promise<{ user: User; token: string } | false> {
-        try {
-            const user = await this.userRepository.findByUsernameOrEmail(usernameOrEmail);
+    public async authenticate(user: {
+        name: string | null;
+        email: string | null;
+        googleId: string;
+    }): Promise<{ user: User; token: string }> {
+        await this.userRepository.create({
+            username: null,
+            password: null,
+            name: user.name,
+            email: user.email,
+            isActive: true,
+            role: "admin",
+            projectId: crypto.randomUUID(),
+            oAuth: {
+                googleId: user.googleId,
+            },
+        });
 
-            const isUserLoginPasswordMatched = await bcrypt.compare(password, user.password);
+        const foundUser = await this.userRepository.getUserByGoogleId(user.googleId);
 
-            const accessToken = sign(
-                { username: user.username, user_id: user._id, project_id: user.projectId },
-                `${process.env.JWT_SECRET_KEY}`,
-            );
+        const accessToken = sign(
+            { userId: foundUser.id, projectId: foundUser.projectId },
+            `${process.env.JWT_SECRET_KEY}`,
+        );
 
-            if (isUserLoginPasswordMatched) {
-                return { user, token: accessToken };
-            }
-        } catch (error) {
-            console.error(error);
-
-            throw error;
-        }
-
-        return false;
+        return { user: foundUser, token: accessToken };
     }
 
-    public async deleteUser(id: string): Promise<void> {
+    public async create(user: User): Promise<void> {
+        await this.userRepository.create(user);
+    }
+
+    public async delete(id: string): Promise<void> {
         await this.userRepository.delete(id);
     }
 }

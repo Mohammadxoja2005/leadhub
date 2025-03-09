@@ -12,9 +12,12 @@ import {
 } from "./repositories";
 import { MongooseModule } from "@nestjs/mongoose";
 import { Collections } from "./schema";
+import { PassportModule } from "@nestjs/passport";
+import { AuthGoogleStrategy } from "app/infrastructure/auth/strategies/google";
 
 @Module({
     imports: [
+        PassportModule.register({ defaultStrategy: "google" }),
         MongooseModule.forFeature([
             {
                 name: Collections.Lead,
@@ -51,12 +54,17 @@ import { Collections } from "./schema";
             provide: Infrastructure.Repository.Contact,
             useClass: ContactRepositoryImpl,
         },
+        {
+            provide: Infrastructure.Auth.Google,
+            useClass: AuthGoogleStrategy,
+        },
     ],
     exports: [
         Infrastructure.Repository.Deal,
         Infrastructure.Repository.Lead,
         Infrastructure.Repository.User,
         Infrastructure.Repository.Contact,
+        Infrastructure.Auth.Google,
     ],
 })
 export class InfrastructureModule {}

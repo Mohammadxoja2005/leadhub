@@ -89,7 +89,7 @@ export class ContactRepositoryImpl implements ContactRepository {
             organization: contact.organization,
             email: contact.email,
             phone: contact.phone,
-            project_id: new Types.ObjectId(contact.projectId),
+            project_id: contact.projectId,
             user_id: new Types.ObjectId(contact.userId),
             created_at: new Date(),
             updated_at: new Date(),
