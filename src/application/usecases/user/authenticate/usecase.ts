@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Application } from "app/common";
 import { UserService } from "app/application/services";
+import { User } from "app/domain";
 
 @Injectable()
 export class AuthenticateUserUseCase {
@@ -13,7 +14,7 @@ export class AuthenticateUserUseCase {
         name: string | null;
         email: string | null;
         googleId: string;
-    }): Promise<void> {
-        await this.userService.authenticate(user);
+    }): Promise<{ user: User; token: string }> {
+        return this.userService.authenticate(user);
     }
 }

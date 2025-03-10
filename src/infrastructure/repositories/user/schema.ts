@@ -1,4 +1,4 @@
-import { Schema, Types } from "mongoose";
+import { Schema } from "mongoose";
 import { Collections } from "app/infrastructure/schema";
 import { UserHydratedDocument } from "app/infrastructure/repositories/user/document";
 
@@ -13,7 +13,7 @@ export const UserSchema = new Schema<UserHydratedDocument>(
         o_auth: {
             google_id: String,
         },
-        project_id: Types.ObjectId,
+        project_id: String,
         updated_at: Date,
         created_at: Date,
     },

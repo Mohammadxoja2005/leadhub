@@ -4,7 +4,10 @@ import { AuthenticateUserUseCase } from "app/application/usecases";
 import { Request } from "express";
 
 interface AuthenticatedRequest extends Request {
-    user?: never;
+    user: {
+        id: string;
+        _json: { name?: string; email?: string; email_verified?: boolean };
+    };
 }
 
 @Controller("auth")
@@ -23,6 +26,13 @@ export class AuthController {
         // Store user in session or database (handled in service)
         console.log("Authenticated User:", user);
 
+        const result = await this.authenticateUserUseCase.execute({
+            name: user._json.name ?? null,
+            email: user._json.email ?? null,
+            googleId: user.id,
+        });
+
+        console.log("result", result);
         res.json();
     }
 }
