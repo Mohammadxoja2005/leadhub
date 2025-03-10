@@ -23,9 +23,6 @@ export class AuthController {
     async googleAuthCallback(@Req() req: AuthenticatedRequest, @Res() res: Response) {
         const user = req.user;
 
-        // Store user in session or database (handled in service)
-        console.log("Authenticated User:", user);
-
         const result = await this.authenticateUserUseCase.execute({
             name: user._json.name ?? null,
             email: user._json.email ?? null,
