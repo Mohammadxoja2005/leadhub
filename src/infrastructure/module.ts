@@ -18,6 +18,7 @@ import { AuthGoogleStrategy } from "app/infrastructure/auth/strategies/google";
 @Module({
     imports: [
         PassportModule.register({ defaultStrategy: "google" }),
+        MongooseModule.forRoot("mongodb://localhost:27017/leadhub"),
         MongooseModule.forFeature([
             {
                 name: Collections.Lead,

@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { Application } from "app/common";
 import { ContactServiceImpl, DealServiceImpl, LeadServiceImpl, UserServiceImpl } from "./services";
-import { ContactController, LeadController } from "./api/controllers";
+import { AuthController, ContactController, LeadController } from "./api/controllers";
 import { InfrastructureModule } from "../infrastructure/module";
 import {
     CreateContactUseCase,
@@ -24,7 +24,7 @@ import {
 
 @Module({
     imports: [InfrastructureModule],
-    controllers: [LeadController, ContactController],
+    controllers: [LeadController, ContactController, AuthController],
     providers: [
         {
             provide: Application.Service.User,

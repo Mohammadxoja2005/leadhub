@@ -18,9 +18,11 @@ export class AuthController {
     @Get("google/callback")
     @UseGuards(AuthGuard("google"))
     async googleAuthCallback(@Req() req: AuthenticatedRequest, @Res() res: Response) {
-        const user = req.user; // Google profile returned from validate()
+        const user = req.user;
 
         // Store user in session or database (handled in service)
         console.log("Authenticated User:", user);
+
+        res.json();
     }
 }
