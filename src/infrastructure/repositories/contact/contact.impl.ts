@@ -30,7 +30,7 @@ export class ContactRepositoryImpl implements ContactRepository {
         const { skip, limit } = this.calculatePagination(meta);
 
         const contacts = await this.model
-            .find<ContactDocument>({ project_id: new Types.ObjectId(projectId) })
+            .find<ContactDocument>({ project_id: projectId })
             .skip(skip)
             .limit(limit)
             .lean()
@@ -54,7 +54,7 @@ export class ContactRepositoryImpl implements ContactRepository {
         const contacts = await this.model
             .find<ContactDocument>({
                 user_id: new Types.ObjectId(userId),
-                project_id: new Types.ObjectId(projectId),
+                project_id: projectId,
             })
             .skip(skip)
             .limit(limit)
