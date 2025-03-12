@@ -30,17 +30,17 @@ export class ContactController {
         @Res() response: Response,
     ): Promise<void> {
         try {
-            const { user_id, project_id } = decode(request.header("Token") as string) as JwtPayload;
+            const { userId, projectId } = decode(request.header("Token") as string) as JwtPayload;
 
             const contactWithMetadata = {
-                userId: user_id,
-                projectId: project_id,
+                userId: userId,
+                projectId: projectId,
                 ...body,
             };
 
             await this.createContactUseCase.execute(contactWithMetadata);
 
-            response.status(HttpStatus.CREATED);
+            response.json(HttpStatus.CREATED);
         } catch (error) {
             console.error("Error in CreateContactUseCase", error);
 
