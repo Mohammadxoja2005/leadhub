@@ -29,18 +29,18 @@ export class ContactRepositoryImpl implements ContactRepository {
         const { projectId, meta } = params;
         const { skip, limit } = this.calculatePagination(meta);
 
-        const contacts = await this.model
+        const documents = await this.model
             .find<ContactDocument>({ project_id: projectId })
             .skip(skip)
             .limit(limit)
             .lean()
             .exec();
 
-        if (!contacts) {
+        if (!documents) {
             throw new NotFoundException("Contact not found");
         }
 
-        return contacts.map((contact: ContactDocument) => this.documentToEntity(contact));
+        return documents.map((contact: ContactDocument) => this.documentToEntity(contact));
     }
 
     public async getAllByUserIdAndProjectId(params: {
@@ -51,7 +51,7 @@ export class ContactRepositoryImpl implements ContactRepository {
         const { userId, projectId, meta } = params;
         const { skip, limit } = this.calculatePagination(meta);
 
-        const contacts = await this.model
+        const documents = await this.model
             .find<ContactDocument>({
                 user_id: new Types.ObjectId(userId),
                 project_id: projectId,
@@ -61,26 +61,26 @@ export class ContactRepositoryImpl implements ContactRepository {
             .lean()
             .exec();
 
-        if (!contacts) {
+        if (!documents) {
             throw new NotFoundException("Contact not found");
         }
 
-        return contacts.map((contact: ContactDocument) => this.documentToEntity(contact));
+        return documents.map((contact: ContactDocument) => this.documentToEntity(contact));
     }
 
     public async get(id: string): Promise<ContactBase[]> {
-        const contacts = await this.model
+        const document = await this.model
             .find<ContactDocument>({
                 _id: new Types.ObjectId(id),
             })
             .lean()
             .exec();
 
-        if (!contacts) {
+        if (!document) {
             throw new NotFoundException("Contact not found");
         }
 
-        return contacts.map((contact: ContactDocument) => this.documentToEntity(contact));
+        return document.map((contact: ContactDocument) => this.documentToEntity(contact));
     }
 
     public async create(contact: ContactCreate): Promise<void> {
