@@ -25,14 +25,14 @@ export class UserRepositoryImpl implements UserRepository {
         return documents.map((document) => this.documentToEntity(document));
     }
 
-    public async getUserByGoogleId(id: string): Promise<User> {
-        const document = await this.model.findOne<UserDocument>({ "o_auth.google_id": id });
+    public async getUserByGoogleId(id: string): Promise<User[]> {
+        const documents = await this.model.find<UserDocument>({ "o_auth.google_id": id });
 
-        if (!document) {
+        if (!documents) {
             throw new NotFoundException("User not found");
         }
 
-        return this.documentToEntity(document);
+        return documents.map((document) => this.documentToEntity(document));
     }
 
     public async getById(id: string): Promise<User> {

@@ -40,7 +40,7 @@ export class ContactRepositoryImpl implements ContactRepository {
             throw new NotFoundException("Contact not found");
         }
 
-        return documents.map((contact: ContactDocument) => this.documentToEntity(contact));
+        return documents.map((document: ContactDocument) => this.documentToEntity(document));
     }
 
     public async getAllByUserIdAndProjectId(params: {
@@ -65,7 +65,7 @@ export class ContactRepositoryImpl implements ContactRepository {
             throw new NotFoundException("Contact not found");
         }
 
-        return documents.map((contact: ContactDocument) => this.documentToEntity(contact));
+        return documents.map((document: ContactDocument) => this.documentToEntity(document));
     }
 
     public async get(id: string): Promise<ContactBase[]> {
@@ -80,7 +80,7 @@ export class ContactRepositoryImpl implements ContactRepository {
             throw new NotFoundException("Contact not found");
         }
 
-        return document.map((contact: ContactDocument) => this.documentToEntity(contact));
+        return document.map((document: ContactDocument) => this.documentToEntity(document));
     }
 
     public async create(contact: ContactCreate): Promise<void> {

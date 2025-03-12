@@ -37,11 +37,11 @@ export class UserServiceImpl implements UserService {
         const foundUser = await this.userRepository.getUserByGoogleId(user.googleId);
 
         const accessToken = sign(
-            { userId: foundUser.id, projectId: foundUser.projectId },
+            { userId: foundUser[0].id, projectId: foundUser[0].projectId },
             `${process.env.JWT_SECRET_KEY}`,
         );
 
-        return { user: foundUser, token: accessToken };
+        return { user: foundUser[0], token: accessToken };
     }
 
     public async create(user: User): Promise<void> {

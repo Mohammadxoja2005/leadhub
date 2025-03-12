@@ -20,8 +20,11 @@ export class AuthController {
 
     @Get("google/callback")
     @UseGuards(AuthGuard("google"))
-    async googleAuthCallback(@Req() req: AuthenticatedRequest, @Res() res: Response) {
-        const user = req.user;
+    async googleAuthCallback(
+        @Req() request: AuthenticatedRequest,
+        @Res() response: Response,
+    ): Promise<void> {
+        const user = request.user;
 
         const result = await this.authenticateUserUseCase.execute({
             name: user._json.name ?? null,
@@ -30,6 +33,6 @@ export class AuthController {
         });
 
         console.log("result", result);
-        res.json();
+        response.json();
     }
 }

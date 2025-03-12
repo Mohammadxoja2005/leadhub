@@ -8,7 +8,7 @@ export interface UserRepository {
 
     getAll: () => Promise<User[]>;
 
-    getUserByGoogleId: (id: string) => Promise<User>;
+    getUserByGoogleId: (id: string) => Promise<User[]>;
 
     getById: (id: string) => Promise<User>;
 }
