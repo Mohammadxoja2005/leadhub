@@ -48,7 +48,7 @@ export class ContactController {
         }
     }
 
-    @Get()
+    @Get("/get_all")
     async getAll(@Req() request: Request, @Res() response: Response): Promise<void> {
         try {
             const { user_id: userId, project_id: projectId } = decode(
