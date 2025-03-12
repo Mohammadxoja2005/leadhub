@@ -48,7 +48,7 @@ export class ContactController {
         }
     }
 
-    @Get("/get_all")
+    @Get("/get/all")
     async getAll(@Req() request: Request, @Res() response: Response): Promise<void> {
         try {
             const { userId, projectId } = decode(request.header("Token") as string) as JwtPayload;
@@ -68,7 +68,7 @@ export class ContactController {
         }
     }
 
-    @Get("/:id")
+    @Get("get/:id")
     async get(@Req() request: Request, @Res() response: Response): Promise<void> {
         try {
             const { id: contactId } = request.params;
