@@ -26,13 +26,13 @@ export class AuthController {
     ): Promise<void> {
         const user = request.user;
 
-        const result = await this.authenticateUserUseCase.execute({
+        const users = await this.authenticateUserUseCase.execute({
             name: user._json.name ?? null,
             email: user._json.email ?? null,
             googleId: user.id,
         });
 
-        console.log("result", result);
+        console.log("result", users);
         response.json();
     }
 }
