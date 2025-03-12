@@ -101,11 +101,11 @@ export class ContactController {
     async delete(@Req() request: Request, @Res() response: Response): Promise<void> {
         // TODO need to add check if it is userId and projectId of user belonga to the contact then delete it. Should add in db
         try {
-            const { contact_id: contactId } = request.params;
+            const { id: contactId } = request.params;
 
             await this.deleteContactUseCase.execute(contactId);
 
-            response.status(HttpStatus.OK);
+            response.json(HttpStatus.OK);
         } catch (error) {
             console.error("Error in DeleteContactUseCase", error);
 
