@@ -84,10 +84,20 @@ export class ContactController {
     }
 
     @Post("update/:id")
-    async update(@Body() body: UpdateInput, @Res() response: Response): Promise<void> {
+    async update(
+        @Body() body: UpdateInput,
+        @Req() request: Request,
+        @Res() response: Response,
+    ): Promise<void> {
         // TODO need to add check if it is userId and projectId of user belonga to the contact then update it. Should add in db,
         try {
-            await this.updateContactUseCase.execute(body);
+            const { id } = request.body;
+            const contactWithId = {
+                ...body,
+                id,
+            };
+
+            await this.updateContactUseCase.execute(contactWithId);
 
             response.status(HttpStatus.OK);
         } catch (error) {
