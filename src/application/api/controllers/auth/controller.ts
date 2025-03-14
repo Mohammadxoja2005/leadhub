@@ -1,7 +1,7 @@
 import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthenticateUserUseCase } from "app/application/usecases";
-import { Request } from "express";
+import { Request, Response } from "express";
 
 interface AuthenticatedRequest extends Request {
     user: {
@@ -32,7 +32,6 @@ export class AuthController {
             googleId: user.id,
         });
 
-        console.log("result", users);
-        response.json();
+        response.json(users);
     }
 }

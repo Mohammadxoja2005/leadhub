@@ -23,12 +23,10 @@ export class LeadController {
         private readonly deleteLeadUsecase: DeleteLeadUsecase,
     ) {}
 
-    @Get()
+    @Get("/get/all")
     async getAll(@Req() request: Request, @Res() response: Response): Promise<void> {
         try {
-            const { user_id: userId, project_id: projectId } = decode(
-                request.header("Token") as string,
-            ) as JwtPayload;
+            const { userId, projectId } = decode(request.header("Token") as string) as JwtPayload;
             const page = request.query.page as string;
 
             const leads = await this.getAllLeadsUseCase.execute({
