@@ -91,7 +91,7 @@ export class ContactController {
     ): Promise<void> {
         // TODO need to add check if it is userId and projectId of user belonga to the contact then update it. Should add in db,
         try {
-            const { id } = request.body;
+            const { id } = request.params;
             const contactWithId = {
                 ...body,
                 id,
@@ -99,7 +99,7 @@ export class ContactController {
 
             await this.updateContactUseCase.execute(contactWithId);
 
-            response.status(HttpStatus.OK);
+            response.json(HttpStatus.OK);
         } catch (error) {
             console.error("Error in UpdateContactUseCase", error);
 

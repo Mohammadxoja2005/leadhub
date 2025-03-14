@@ -100,9 +100,11 @@ export class ContactRepositoryImpl implements ContactRepository {
         await this.model.updateOne(
             {
                 _id: new Types.ObjectId(contact.id),
+            },
+            {
+                ...contact,
                 updated_at: new Date(),
             },
-            contact,
         );
     }
 
